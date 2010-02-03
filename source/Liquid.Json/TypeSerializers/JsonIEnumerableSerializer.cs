@@ -25,6 +25,11 @@ namespace Liquid.Json.TypeSerializers {
             }
             context.Write(']');
         }
+
+
+        public T Deserialize(JsonDeserializationContext context) {
+            throw new NotImplementedException();
+        }
     }
     class JsonIEnumerableSerializer<T, S> : IJsonTypeSerializer<T>
         where T : IEnumerable<S> {
@@ -39,6 +44,11 @@ namespace Liquid.Json.TypeSerializers {
                 context.Serialize<S>(item);
             }
             context.Write(']');
+        }
+
+
+        public T Deserialize(JsonDeserializationContext context) {
+            throw new NotImplementedException();
         }
     }
 

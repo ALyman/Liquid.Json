@@ -10,6 +10,13 @@ namespace Liquid.Json.Tests.Serialization {
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        public void Date() {
+            var serializer = new JsonSerializer();
+
+            Assert.AreEqual("new Date(86400)", serializer.Serialize(new DateTime(1970, 1, 2, 0, 0, 0, DateTimeKind.Utc)));
+        }
+
+        [TestMethod]
         public void Boolean_True() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("true", serializer.Serialize(true));

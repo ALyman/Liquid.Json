@@ -10,6 +10,7 @@ namespace Liquid.Json {
     public class JsonSerializer {
         static readonly MethodInfo SerializeMethod;
         static readonly MethodInfo SerializeContextMethod;
+        static readonly MethodInfo DeserializeContextMethod;
 
         static JsonSerializer() {
             SerializeMethod =
@@ -23,6 +24,12 @@ namespace Liquid.Json {
                  where m.Name == "Serialize"
                  let p = m.GetParameters()
                  where p.Length == 2 && p[1].ParameterType == typeof(JsonSerializationContext)
+                 select m).Single();
+            DeserializeContextMethod =
+                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
+                 where m.Name == "Deserialize"
+                 let p = m.GetParameters()
+                 where p.Length == 1 && p[0].ParameterType == typeof(JsonDeserializationContext)
                  select m).Single();
         }
 
@@ -98,5 +105,33 @@ namespace Liquid.Json {
         }
 
         public IFormatProvider FormatProvider { get; set; }
+
+        public T Deserialize<T>(string str) {
+            var reader = new StringReader(str);
+            return Deserialize<T>(reader);
+        }
+        public T Deserialize<T>(Stream stream) {
+            using (var reader = new StreamReader(stream)) {
+                return Deserialize<T>(reader);
+            }
+        }
+        public T Deserialize<T>(TextReader reader) {
+            var jsonReader = new JsonReader(reader);
+            return Deserialize<T>(jsonReader);
+        }
+        public T Deserialize<T>(JsonReader reader) {
+            var context = new JsonDeserializationContext(this, reader);
+            return Deserialize<T>(context);
+        }
+        internal T Deserialize<T>(JsonDeserializationContext context) {
+            var s = GetSerializer<T>();
+            return s.Deserialize(context);
+        }
+
+        internal object DeserializeAs(Type type, JsonDeserializationContext context) {
+            var m = DeserializeContextMethod
+                .MakeGenericMethod(type);
+            return m.Invoke(this, new object[] { context });
+        }
     }
 }
