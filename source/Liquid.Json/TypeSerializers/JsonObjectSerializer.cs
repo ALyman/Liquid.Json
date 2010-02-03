@@ -9,30 +9,30 @@ namespace Liquid.Json.TypeSerializers {
     class JsonObjectSerializer<T> : IJsonTypeSerializer<T> {
         const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public;
 
-        public void Serialize(T value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write('{');
+        public void Serialize(T value, JsonSerializationContext context) {
+            context.Write('{');
             bool first = true;
             foreach (var member in typeof(T).GetProperties(FLAGS)) {
                 if (member.IsDefined(typeof(JsonIgnoreAttribute), true)) continue;
                 if (first)
                     first = false;
                 else
-                    writer.Write(", ");
-                serializer.Serialize(member.Name.ToString(), writer);
-                writer.Write(": ");
-                serializer.SerializeAs(member.PropertyType, member.GetValue(value, null), writer);
+                    context.Write(", ");
+                context.Serialize(member.Name.ToString());
+                context.Write(": ");
+                context.SerializeAs(member.PropertyType, member.GetValue(value, null));
             }
             foreach (var member in typeof(T).GetFields(FLAGS)) {
                 if (member.IsDefined(typeof(JsonIgnoreAttribute), true)) continue;
                 if (first)
                     first = false;
                 else
-                    writer.Write(", ");
-                serializer.Serialize(member.Name.ToString(), writer);
-                writer.Write(": ");
-                serializer.SerializeAs(member.FieldType, member.GetValue(value), writer);
+                    context.Write(", ");
+                context.Serialize(member.Name.ToString());
+                context.Write(": ");
+                context.SerializeAs(member.FieldType, member.GetValue(value));
             }
-            writer.Write('}');
+            context.Write('}');
         }
     }
 }

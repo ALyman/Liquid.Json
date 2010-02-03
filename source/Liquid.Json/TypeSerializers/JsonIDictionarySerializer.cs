@@ -7,41 +7,41 @@ using System.IO;
 
 namespace Liquid.Json.TypeSerializers {
     class JsonIDictionarySerializer<T> : IJsonTypeSerializer<T> where T : IDictionary {
-        public void Serialize(T value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write('{');
+        public void Serialize(T value, JsonSerializationContext context) {
+            context.Write('{');
             bool first = true;
             foreach (var key in value.Keys) {
                 if (first)
                     first = false;
                 else
-                    writer.Write(", ");
+                    context.Write(", ");
                 var item = value[key];
-                serializer.Serialize(key.ToString(), writer);
-                writer.Write(": ");
+                context.Serialize(key.ToString());
+                context.Write(": ");
                 if (item == null)
-                    serializer.Serialize(item, writer);
+                    context.Serialize(item);
                 else {
                     var type = item.GetType();
-                    serializer.SerializeAs(type, item, writer);
+                    context.SerializeAs(type, item);
                 }
             }
-            writer.Write('}');
+            context.Write('}');
         }
     }
     class JsonIDictionarySerializer<T, K, V> : IJsonTypeSerializer<T> where T : IDictionary<K,V> {
-        public void Serialize(T value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write('{');
+        public void Serialize(T value, JsonSerializationContext context) {
+            context.Write('{');
             bool first = true;
             foreach (var item in value) {
                 if (first)
                     first = false;
                 else
-                    writer.Write(", ");
-                serializer.Serialize(item.Key.ToString(), writer);
-                writer.Write(": ");
-                serializer.Serialize<V>(item.Value, writer);
+                    context.Write(", ");
+                context.Serialize(item.Key.ToString());
+                context.Write(": ");
+                context.Serialize<V>(item.Value);
             }
-            writer.Write('}');
+            context.Write('}');
         }
     }
 }

@@ -40,5 +40,12 @@ namespace Liquid.Json.Tests.Serialization {
             };
             Assert.AreEqual("{\"1\": 2, \"3\": 4, \"5\": 6}", serializer.Serialize(dict));
         }
+
+        [TestMethod]
+        public void NullDictionary() {
+            var serializer = new JsonSerializer();
+            var result = serializer.Serialize<IDictionary<string, string>>(null);
+            Assert.AreEqual("null", result);
+        }
     }
 }

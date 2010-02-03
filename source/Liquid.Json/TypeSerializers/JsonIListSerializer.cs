@@ -8,32 +8,32 @@ using System.IO;
 namespace Liquid.Json.TypeSerializers {
     class JsonIListSerializer<T> : IJsonTypeSerializer<T>
         where T : IList {
-        public void Serialize(T value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write('[');
+        public void Serialize(T value, JsonSerializationContext context) {
+            context.Write('[');
             for (int i = 0; i < value.Count; i++) {
                 if (i > 0)
-                    writer.Write(", ");
+                    context.Write(", ");
                 var item = value[i];
                 if (item == null)
-                    serializer.Serialize(item, writer);
+                    context.Serialize(item);
                 else {
                     var type = item.GetType();
-                    serializer.SerializeAs(type, item, writer);
+                    context.SerializeAs(type, item);
                 }
             }
-            writer.Write(']');
+            context.Write(']');
         }
     }
     class JsonIListSerializer<T, S> : IJsonTypeSerializer<T>
         where T : IList<S> {
-        public void Serialize(T value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write('[');
+        public void Serialize(T value, JsonSerializationContext context) {
+            context.Write('[');
             for (int i = 0; i < value.Count; i++) {
                 if (i > 0)
-                    writer.Write(", ");
-                serializer.Serialize<S>(value[i], writer);
+                    context.Write(", ");
+                context.Serialize<S>(value[i]);
             }
-            writer.Write(']');
+            context.Write(']');
         }
     }
 }

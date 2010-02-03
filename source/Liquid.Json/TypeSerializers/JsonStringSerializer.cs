@@ -6,15 +6,15 @@ using System.IO;
 
 namespace Liquid.Json.TypeSerializers {
     class JsonStringSerializer : IJsonTypeSerializer<string> {
-        public void Serialize(string value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write('"');
+        public void Serialize(string value, JsonSerializationContext context) {
+            context.Write('"');
             foreach (char ch in value) {
                 switch (ch) {
-                    case '"': writer.Write("\\\""); break;
-                    default: writer.Write(ch); break;
+                    case '"': context.Write("\\\""); break;
+                    default: context.Write(ch); break;
                 }
             }
-            writer.Write('"');
+            context.Write('"');
         }
     }
 }

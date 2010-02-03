@@ -10,6 +10,8 @@ namespace Liquid.Json.TypeSerializers {
         public IJsonTypeSerializer<T> CreateSerializer<T>(JsonSerializer serializer) {
             var typeCode = Type.GetTypeCode(typeof(T));
             switch (typeCode) {
+                case TypeCode.Boolean:
+                    return (IJsonTypeSerializer<T>)new JsonBooleanSerializer();
                 case TypeCode.DateTime:
                     return (IJsonTypeSerializer<T>)new JsonDateSerializer();
                 case TypeCode.SByte:
@@ -43,6 +45,7 @@ namespace Liquid.Json.TypeSerializers {
                         ?? TryMatch<T>(typeof(IDictionary), typeof(JsonIDictionarySerializer<>))
                         ?? TryMatch<T>(typeof(IList), typeof(JsonIListSerializer<>))
                         ?? TryMatch<T>(typeof(IEnumerable), typeof(JsonIEnumerableSerializer<>))
+                        ?? TryMatch<T>(typeof(Nullable<>), typeof(JsonNullableSerializer<,>))
                         ?? new JsonObjectSerializer<T>()
                         ;
                 default:

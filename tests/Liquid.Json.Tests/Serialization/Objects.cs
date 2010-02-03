@@ -78,5 +78,12 @@ namespace Liquid.Json.Tests.Serialization {
             [JsonIgnore]
             public int C;
         }
+
+        [TestMethod]
+        public void NullObject() {
+            var serializer = new JsonSerializer();
+            var result = serializer.Serialize<RespectsIgnoreAttributeOnFields_Class>(null);
+            Assert.AreEqual("null", result);
+        }
     }
 }

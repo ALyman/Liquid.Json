@@ -8,8 +8,8 @@ namespace Liquid.Json.TypeSerializers {
     class JsonIntegerSerializer<T> : IJsonTypeSerializer<T> 
         where T : IFormattable {
 
-        public void Serialize(T value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write(value.ToString(null, serializer.FormatProvider));
+        public void Serialize(T value, JsonSerializationContext context) {
+            context.Write(value.ToString(null, context.FormatProvider));
         }
     }
 }

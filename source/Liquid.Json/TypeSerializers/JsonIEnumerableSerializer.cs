@@ -8,37 +8,37 @@ using System.Collections;
 namespace Liquid.Json.TypeSerializers {
     class JsonIEnumerableSerializer<T> : IJsonTypeSerializer<T>
     where T : IEnumerable {
-        public void Serialize(T value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write('[');
+        public void Serialize(T value, JsonSerializationContext context) {
+            context.Write('[');
             bool first = true;
             foreach (var item in value) {
                 if (first)
                     first = false;
                 else
-                    writer.Write(", ");
+                    context.Write(", ");
                 if (item == null)
-                    serializer.Serialize(item, writer);
+                    context.Serialize(item);
                 else {
                     var type = item.GetType();
-                    serializer.SerializeAs(type, item, writer);
+                    context.SerializeAs(type, item);
                 }
             }
-            writer.Write(']');
+            context.Write(']');
         }
     }
     class JsonIEnumerableSerializer<T, S> : IJsonTypeSerializer<T>
         where T : IEnumerable<S> {
-        public void Serialize(T value, TextWriter writer, JsonSerializer serializer) {
-            writer.Write('[');
+        public void Serialize(T value, JsonSerializationContext context) {
+            context.Write('[');
             bool first = true;
             foreach (var item in value) {
                 if (first)
                     first = false;
                 else
-                    writer.Write(", ");
-                serializer.Serialize<S>(item, writer);
+                    context.Write(", ");
+                context.Serialize<S>(item);
             }
-            writer.Write(']');
+            context.Write(']');
         }
     }
 

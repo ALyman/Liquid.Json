@@ -26,5 +26,12 @@ namespace Liquid.Json.Tests.Serialization {
             var serializer = new JsonSerializer();
             Assert.AreEqual("[0, 1, 2]", serializer.Serialize(new Int32[] { 0, 1, 2 }.Select(i => i)));
         }
+
+        [TestMethod]
+        public void NullArray() {
+            var serializer = new JsonSerializer();
+            var result = serializer.Serialize<int[]>(null);
+            Assert.AreEqual("null", result);
+        }
     }
 }

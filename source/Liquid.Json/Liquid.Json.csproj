@@ -42,9 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JsonIgnoreAttribute.cs" />
+    <Compile Include="JsonSerializationContext.cs" />
     <Compile Include="TypeSerializers\DefaultJsonTypeSerializerFactory.cs" />
     <Compile Include="IJsonTypeSerializer.cs" />
     <Compile Include="IJsonTypeSerializerFactory.cs" />
+    <Compile Include="TypeSerializers\JsonBooleanSerializer.cs" />
     <Compile Include="TypeSerializers\JsonDecimalSerializer.cs" />
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="TypeSerializers\JsonIEnumerableSerializer.cs" />
     <Compile Include="TypeSerializers\JsonIListSerializer.cs" />
     <Compile Include="TypeSerializers\JsonIntegerSerializer.cs" />
+    <Compile Include="TypeSerializers\JsonNullableSerializer.cs" />
     <Compile Include="TypeSerializers\JsonObjectSerializer.cs" />
     <Compile Include="TypeSerializers\JsonRealSerializer.cs" />
     <Compile Include="TypeSerializers\JsonStringSerializer.cs" />

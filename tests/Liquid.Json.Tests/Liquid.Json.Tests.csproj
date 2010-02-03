@@ -55,6 +55,7 @@
     <Compile Include="Serialization\Extensibility.cs" />
     <Compile Include="Serialization\Integers.cs" />
     <Compile Include="Serialization\Objects.cs" />
+    <Compile Include="Serialization\Other.cs" />
     <Compile Include="Serialization\Reals.cs" />
     <Compile Include="Serialization\Strings.cs" />
   </ItemGroup>

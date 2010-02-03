@@ -5,12 +5,11 @@ using System.Text;
 
 namespace Liquid.Json.TypeSerializers {
     class JsonBooleanSerializer : IJsonTypeSerializer<bool> {
-
-        public void Serialize(bool value, System.IO.TextWriter writer, JsonSerializer serializer) {
+        public void Serialize(bool value, JsonSerializationContext context) {
             if (value)
-                writer.Write("true");
+                context.Write("true");
             else
-                writer.Write("false");
+                context.Write("false");
         }
     }
 }

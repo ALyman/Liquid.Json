@@ -6,6 +6,6 @@ using System.IO;
 
 namespace Liquid.Json {
     public interface IJsonTypeSerializer<T> {
-        void Serialize(T value, TextWriter writer, JsonSerializer serializer);
+        void Serialize(T value, JsonSerializationContext context);
     }
 }
