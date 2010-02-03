@@ -16,11 +16,11 @@ namespace Liquid.Json.TypeSerializers {
             TryParse = (TryParseDelegate)Delegate.CreateDelegate(typeof(TryParseDelegate), typeof(T), "TryParse");
         }
 
-        public void Serialize(T value, JsonSerializationContext context) {
+        public void Serialize(T @object, JsonSerializationContext context) {
             if (typeof(T) == typeof(Single))
-                context.Writer.WriteValue((Single)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((Single)(object)@object, context.FormatProvider);
             else if (typeof(T) == typeof(Double))
-                context.Writer.WriteValue((Double)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((Double)(object)@object, context.FormatProvider);
             else throw new NotSupportedException();
         }
 

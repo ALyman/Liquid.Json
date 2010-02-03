@@ -36,8 +36,8 @@ namespace Liquid.Json.Tests.Serialization {
                 ;
             typeSerializer
                 .Setup(s => s.Serialize(0, It.IsAny<JsonSerializationContext>()))
-                .Callback((int value, JsonSerializationContext context) => {
-                    Assert.AreEqual(0, value);
+                .Callback((int @object, JsonSerializationContext context) => {
+                    Assert.AreEqual(0, @object);
                     context.Writer.WriteValue(456);
                 }).Verifiable("Didn't get the serializer from the factory")
                 ;

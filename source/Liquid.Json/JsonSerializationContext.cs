@@ -17,11 +17,11 @@ namespace Liquid.Json {
 
         public IFormatProvider FormatProvider { get { return serializer.FormatProvider; } }
 
-        public void Serialize<T>(T value) {
-            serializer.Serialize<T>(value, this);
+        public void Serialize<T>(T @object) {
+            serializer.Serialize<T>(@object, this);
         }
-        public void SerializeAs(Type type, object value) {
-            serializer.SerializeAs(type, value, this);
+        public void SerializeAs(Type type, object @object) {
+            serializer.SerializeAs(type, @object, this);
         }
     }
 }

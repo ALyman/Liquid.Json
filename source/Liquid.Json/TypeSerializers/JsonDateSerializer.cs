@@ -7,8 +7,8 @@ using System.IO;
 namespace Liquid.Json.TypeSerializers {
     public class JsonDateSerializer : IJsonTypeSerializer<DateTime> {
         static readonly DateTime EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        public void Serialize(DateTime value, JsonSerializationContext context) {
-            var span = value - EPOCH;
+        public void Serialize(DateTime @object, JsonSerializationContext context) {
+            var span = @object - EPOCH;
             context.Writer.WriteStartConstructor("Date");
             context.Writer.WriteValue((long)span.TotalSeconds);
             context.Writer.WriteEnd();

@@ -16,7 +16,13 @@ namespace Liquid.Json {
 
         StringBuilder buffer = new StringBuilder();
 
+        bool undone = false;
+
         public bool ReadNext() {
+            if (undone) {
+                undone = false;
+                return true;
+            }
             char ch;
             do {
                 ch = (char)Peek();
@@ -48,6 +54,12 @@ namespace Liquid.Json {
             if (Array.IndexOf(expectedTypes, Token) == -1)
                 throw new JsonDeserializationException();
             return Text;
+        }
+
+        public void UndoRead() {
+            if (undone)
+                throw new NotSupportedException();
+            undone = true;
         }
 
         private void ReadIdentifier() {

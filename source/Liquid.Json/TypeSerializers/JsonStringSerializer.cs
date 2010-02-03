@@ -6,8 +6,8 @@ using System.IO;
 
 namespace Liquid.Json.TypeSerializers {
     class JsonStringSerializer : IJsonTypeSerializer<string> {
-        public void Serialize(string value, JsonSerializationContext context) {
-            context.Writer.WriteValue(value);
+        public void Serialize(string @object, JsonSerializationContext context) {
+            context.Writer.WriteValue(@object);
         }
 
         public string Deserialize(JsonDeserializationContext context) {

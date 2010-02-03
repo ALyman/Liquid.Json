@@ -17,23 +17,23 @@ namespace Liquid.Json.TypeSerializers {
             TryParse = (TryParseDelegate)Delegate.CreateDelegate(typeof(TryParseDelegate), typeof(T), "TryParse");
         }
 
-        public void Serialize(T value, JsonSerializationContext context) {
+        public void Serialize(T @object, JsonSerializationContext context) {
             if (typeof(T) == typeof(SByte))
-                context.Writer.WriteValue((SByte)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((SByte)(object)@object, context.FormatProvider);
             else if (typeof(T) == typeof(Int16))
-                context.Writer.WriteValue((Int16)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((Int16)(object)@object, context.FormatProvider);
             else if (typeof(T) == typeof(Int32))
-                context.Writer.WriteValue((Int32)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((Int32)(object)@object, context.FormatProvider);
             else if (typeof(T) == typeof(Int64))
-                context.Writer.WriteValue((Int64)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((Int64)(object)@object, context.FormatProvider);
             else if (typeof(T) == typeof(Byte))
-                context.Writer.WriteValue((Byte)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((Byte)(object)@object, context.FormatProvider);
             else if (typeof(T) == typeof(UInt16))
-                context.Writer.WriteValue((UInt16)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((UInt16)(object)@object, context.FormatProvider);
             else if (typeof(T) == typeof(UInt32))
-                context.Writer.WriteValue((UInt32)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((UInt32)(object)@object, context.FormatProvider);
             else if (typeof(T) == typeof(UInt64))
-                context.Writer.WriteValue((UInt64)(object)value, context.FormatProvider);
+                context.Writer.WriteValue((UInt64)(object)@object, context.FormatProvider);
             else throw new NotSupportedException();
         }
 

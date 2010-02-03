@@ -22,17 +22,6 @@ namespace Liquid.Json.Tests.Serialization {
         }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesHashtable() {
-            var serializer = new JsonSerializer();
-            var dict = new Hashtable {
-                {"a","b"},
-                {"c","d"},
-                {"e","f"}
-            };
-            Assert.AreEqual("{\"a\": \"b\", \"c\": \"d\", \"e\": \"f\"}", serializer.Serialize(dict));
-        }
-
-        [TestMethod, TestCategory("Serialization")]
         public void IntDictionary() {
             var serializer = new JsonSerializer();
             var dict = new Dictionary<int, int> {

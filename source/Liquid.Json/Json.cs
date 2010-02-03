@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Liquid.Json {
     public static class Json {
-        public static string ToJson<T>(this T value) {
-            return new JsonSerializer().Serialize(value);
+        public static string ToJson<T>(this T @object) {
+            return new JsonSerializer().Serialize(@object);
         }
 
         public static string EscapeString(string str) {

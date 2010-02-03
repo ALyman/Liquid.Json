@@ -42,9 +42,6 @@ namespace Liquid.Json.TypeSerializers {
                     return TryMatch<T>(typeof(IDictionary<,>), typeof(JsonIDictionarySerializer<,,>))
                         ?? TryMatch<T>(typeof(IList<>), typeof(JsonIListSerializer<,>))
                         ?? TryMatch<T>(typeof(IEnumerable<>), typeof(JsonIEnumerableSerializer<,>))
-                        ?? TryMatch<T>(typeof(IDictionary), typeof(JsonIDictionarySerializer<>))
-                        ?? TryMatch<T>(typeof(IList), typeof(JsonIListSerializer<>))
-                        ?? TryMatch<T>(typeof(IEnumerable), typeof(JsonIEnumerableSerializer<>))
                         ?? TryMatch<T>(typeof(Nullable<>), typeof(JsonNullableSerializer<,>))
                         ?? new JsonObjectSerializer<T>()
                         ;

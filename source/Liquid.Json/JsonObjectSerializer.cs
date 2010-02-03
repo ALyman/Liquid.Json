@@ -10,39 +10,31 @@ namespace Liquid.Json {
     public class JsonObjectSerializer<T> : IJsonTypeSerializer<T> {
         const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public;
 
-        public void Serialize(T value, JsonSerializationContext context) {
+        public void Serialize(T @object, JsonSerializationContext context) {
             context.Writer.WriteStartObject();
             bool first = true;
             foreach (var member in SelectMembers()) {
-                SerializeMember(value, member, first, context);
+                SerializeMember(@object, member, first, context);
                 if (first)
                     first = false;
             }
             context.Writer.WriteEnd();
         }
 
-        protected virtual void SerializeMember(T value, MemberInfo member, bool first, JsonSerializationContext context) {
-            SerializeName(value, member, member.Name, context);
-            Type memberType;
-            object memberValue;
-
-            switch (member.MemberType) {
-                case MemberTypes.Field:
-                    memberType = ((FieldInfo)member).FieldType;
-                    memberValue = ((FieldInfo)member).GetValue(value);
-                    break;
-                case MemberTypes.Property:
-                    memberType = ((PropertyInfo)member).PropertyType;
-                    memberValue = ((PropertyInfo)member).GetValue(value, null);
-                    break;
-                default: throw new NotSupportedException();
-            }
-            SerializeValue(value, member, memberType, memberValue, context);
+        protected virtual void SerializeMember(T @object, MemberInfo member, bool first, JsonSerializationContext context) {
+            SerializeName(@object, member, member.Name, context);
+            SerializeValue(
+                @object,
+                member,
+                member.GetMemberType(),
+                member.GetMemberValue(@object),
+                context
+            );
         }
-        protected virtual void SerializeName(T value, MemberInfo member, string memberName, JsonSerializationContext context) {
+        protected virtual void SerializeName(T @object, MemberInfo member, string memberName, JsonSerializationContext context) {
             context.Writer.WriteName(memberName);
         }
-        protected virtual void SerializeValue(T value, MemberInfo member, Type memberType, object memberValue, JsonSerializationContext context) {
+        protected virtual void SerializeValue(T @object, MemberInfo member, Type memberType, object memberValue, JsonSerializationContext context) {
             context.SerializeAs(memberType, memberValue);
         }
 
@@ -61,12 +53,11 @@ namespace Liquid.Json {
         }
 
         public T Deserialize(JsonDeserializationContext context) {
-            var value = Activator.CreateInstance<T>();
+            var @object = Activator.CreateInstance<T>();
             var members = (from m in SelectMembers()
-                           let f = m as FieldInfo
-                           where f == null || !f.IsInitOnly
-                           let p = m as PropertyInfo
-                           where p == null || p.CanWrite
+                           let readOnly = m.IsReadOnly()
+                           let type = m.GetMemberType()
+                           where !readOnly || context.CanDeserializeInplace(type)
                            select m).ToLookup(m => m.Name.ToLower());
             context.Reader.ReadNextAs(JsonTokenType.ObjectStart);
             while (true) {
@@ -91,7 +82,7 @@ namespace Liquid.Json {
                         break;
                 }
                 context.Reader.ReadNextAs(JsonTokenType.Colon);
-                DeserializeMember(value, selectedMember, context);
+                DeserializeMember(@object, selectedMember, context);
                 context.Reader.ReadNext();
                 if (context.Reader.Token == JsonTokenType.ObjectEnd)
                     break;
@@ -102,29 +93,19 @@ namespace Liquid.Json {
             }
             if (context.Reader.Token != JsonTokenType.ObjectEnd)
                 throw new JsonDeserializationException();
-            return value;
+            return @object;
         }
 
-        protected virtual void DeserializeMember(T value, MemberInfo member, JsonDeserializationContext context) {
-            Type memberType;
-            switch (member.MemberType) {
-                case MemberTypes.Field:
-                    memberType = ((FieldInfo)member).FieldType;
-                    break;
-                case MemberTypes.Property:
-                    memberType = ((PropertyInfo)member).PropertyType;
-                    break;
-                default: throw new NotSupportedException();
-            }
-            var memberValue = context.DeserializeAs(memberType);
-            switch (member.MemberType) {
-                case MemberTypes.Field:
-                    ((FieldInfo)member).SetValue(value, memberValue);
-                    break;
-                case MemberTypes.Property:
-                    ((PropertyInfo)member).SetValue(value, memberValue, null);
-                    break;
-                default: throw new NotSupportedException();
+        protected virtual void DeserializeMember(T @object, MemberInfo member, JsonDeserializationContext context) {
+            Type memberType = member.GetMemberType();
+            if (member.IsReadOnly()) {
+                var value = member.GetMemberValue(@object);
+                context.DeserializeInplace(value, memberType);
+            } else {
+                member.SetMemberValue(
+                    @object, 
+                    context.DeserializeAs(memberType)
+                );
             }
         }
     }

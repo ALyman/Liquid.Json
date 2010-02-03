@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Liquid.Json.TypeSerializers {
     class JsonBooleanSerializer : IJsonTypeSerializer<Boolean> {
-        public void Serialize(Boolean value, JsonSerializationContext context) {
-            context.Writer.WriteValue(value);
+        public void Serialize(Boolean @object, JsonSerializationContext context) {
+            context.Writer.WriteValue(@object);
         }
 
 

@@ -6,40 +6,52 @@ using System.Collections;
 using System.IO;
 
 namespace Liquid.Json.TypeSerializers {
-    class JsonIDictionarySerializer<T> : IJsonTypeSerializer<T> where T : IDictionary {
-        public void Serialize(T value, JsonSerializationContext context) {
+    class JsonIDictionarySerializer<T, K, V> : IJsonTypeInplaceSerializer<T> where T : IDictionary<K,V> {
+        public void Serialize(T @object, JsonSerializationContext context) {
             context.Writer.WriteStartObject();
-            foreach (var key in value.Keys) {
-                var item = value[key];
-                context.Writer.WriteName(key.ToString());
-                if (item == null)
-                    context.Serialize(item);
-                else {
-                    var type = item.GetType();
-                    context.SerializeAs(type, item);
-                }
-            }
-            context.Writer.WriteEnd();
-        }
-
-
-        public T Deserialize(JsonDeserializationContext context) {
-            throw new NotImplementedException();
-        }
-    }
-    class JsonIDictionarySerializer<T, K, V> : IJsonTypeSerializer<T> where T : IDictionary<K,V> {
-        public void Serialize(T value, JsonSerializationContext context) {
-            context.Writer.WriteStartObject();
-            foreach (var item in value) {
+            foreach (var item in @object) {
                 context.Writer.WriteName(item.Key.ToString());
                 context.Serialize<V>(item.Value);
             }
             context.Writer.WriteEnd();
         }
 
-
         public T Deserialize(JsonDeserializationContext context) {
-            throw new NotImplementedException();
+            if (typeof(T) == typeof(IDictionary<K,V>)) {
+                T result = (T)(IDictionary<K, V>)new Dictionary<K, V>();
+                DeserializeInto(ref result, context);
+                return (T)(IDictionary<K, V>)result;
+            } else {
+                var result = Activator.CreateInstance<T>();
+                DeserializeInto(ref result, context);
+                return result;
+            }
+        }
+
+        public void DeserializeInto(ref T @object, JsonDeserializationContext context) {
+            context.Reader.ReadNextAs(JsonTokenType.ObjectStart);
+            while (true) {
+                context.Reader.ReadNext();
+                if (context.Reader.Token == JsonTokenType.ObjectEnd)
+                    break;
+                else if (context.Reader.Token != JsonTokenType.String && context.Reader.Token != JsonTokenType.Identifier)
+                    throw new JsonDeserializationException();
+                var name = context.Reader.Text;
+                if (name.StartsWith("\""))
+                    name = Json.UnescapeString(name);
+                context.Reader.ReadNextAs(JsonTokenType.Colon);
+                var value = context.Deserialize<V>();
+                @object.Add((K)(object)name, value);
+                context.Reader.ReadNext();
+                if (context.Reader.Token == JsonTokenType.ObjectEnd)
+                    break;
+                else if (context.Reader.Token == JsonTokenType.Comma)
+                    continue;
+                else
+                    throw new JsonDeserializationException();
+            }
+            if (context.Reader.Token != JsonTokenType.ObjectEnd)
+                throw new JsonDeserializationException();
         }
     }
 }

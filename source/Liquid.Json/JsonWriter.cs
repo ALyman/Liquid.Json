@@ -113,7 +113,6 @@ namespace Liquid.Json {
             writer.Write(value);
         }
 
-
         public void WriteValue(SByte value, IFormatProvider formatProvider) {
             BeginValue();
             writer.Write(value.ToString(formatProvider));

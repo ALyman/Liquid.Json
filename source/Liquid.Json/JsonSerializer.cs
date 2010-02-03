@@ -47,51 +47,51 @@ namespace Liquid.Json {
             this.factories.Add(new TypeSerializers.DefaultJsonTypeSerializerFactory());
         }
 
-        public string Serialize<T>(T value) {
+        public string Serialize<T>(T @object) {
             var writer = new StringWriter();
-            Serialize(value, writer);
+            Serialize(@object, writer);
             return writer.GetStringBuilder().ToString();
         }
-        public void Serialize<T>(T value, Stream stream) {
+        public void Serialize<T>(T @object, Stream stream) {
             using (var writer = new StreamWriter(stream)) {
-                Serialize<T>(value, writer);
+                Serialize<T>(@object, writer);
             }
         }
-        public void Serialize<T>(T value, TextWriter writer) {
-            Serialize<T>(value, new JsonWriter(writer));
+        public void Serialize<T>(T @object, TextWriter writer) {
+            Serialize<T>(@object, new JsonWriter(writer));
         }
-        public void Serialize<T>(T value, JsonWriter writer) {
+        public void Serialize<T>(T @object, JsonWriter writer) {
             var context = new JsonSerializationContext(this, writer);
-            Serialize(value, context);
+            Serialize(@object, context);
         }
-        internal void Serialize<T>(T value, JsonSerializationContext context) {
-            if (value == null) {
+        internal void Serialize<T>(T @object, JsonSerializationContext context) {
+            if (@object == null) {
                 context.Writer.WriteNull();
             } else {
                 var s = GetSerializer<T>();
-                s.Serialize(value, context);
+                s.Serialize(@object, context);
             }
         }
 
-        public string SerializeAs(Type type, object value) {
+        public string SerializeAs(Type type, object @object) {
             var writer = new StringWriter();
-            SerializeAs(type, value, writer);
+            SerializeAs(type, @object, writer);
             return writer.GetStringBuilder().ToString();
         }
-        public void SerializeAs(Type type, object value, Stream stream) {
+        public void SerializeAs(Type type, object @object, Stream stream) {
             using (var writer = new StreamWriter(stream)) {
-                SerializeAs(type, value, writer);
+                SerializeAs(type, @object, writer);
             }
         }
-        public void SerializeAs(Type type, object value, TextWriter writer) {
+        public void SerializeAs(Type type, object @object, TextWriter writer) {
             var m = SerializeMethod
                 .MakeGenericMethod(type);
-            m.Invoke(this, new object[] { value, writer });
+            m.Invoke(this, new object[] { @object, writer });
         }
-        internal void SerializeAs(Type type, object value, JsonSerializationContext context) {
+        internal void SerializeAs(Type type, object @object, JsonSerializationContext context) {
             var m = SerializeContextMethod
                 .MakeGenericMethod(type);
-            m.Invoke(this, new object[] { value, context });
+            m.Invoke(this, new object[] { @object, context });
         }
 
         protected IJsonTypeSerializer<T> GetSerializer<T>() {
@@ -135,6 +135,15 @@ namespace Liquid.Json {
             var m = DeserializeContextMethod
                 .MakeGenericMethod(type);
             return m.Invoke(this, new object[] { context });
+        }
+
+        public bool CanDeserializeInplace<T>() where T : class {
+            var s = GetSerializer<T>();
+            return s is IJsonTypeInplaceSerializer<T>;
+        }
+
+        internal bool CanDeserializeInplace(Type type) {
+            throw new NotImplementedException();
         }
     }
 }
