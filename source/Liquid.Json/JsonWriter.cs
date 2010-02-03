@@ -13,26 +13,39 @@ namespace Liquid.Json {
             this.writer = writer;
         }
 
-        Stack<bool> state = new Stack<bool>();
+        enum NodeType { Array, Object, Constructor }
+
+        Stack<NodeType> state = new Stack<NodeType>();
         bool empty = true;
         bool itemStarted = false;
         string named = null;
 
         public int Depth { get { return state.Count; } }
-        public bool InObject { get { return !empty && Depth > 0 && !state.Peek(); } }
-        public bool InArray { get { return !empty && Depth > 0 && state.Peek(); } }
+
+        public bool InObject { get { return !empty && Depth > 0 && state.Peek() == NodeType.Object; } }
+        public bool InArray { get { return !empty && Depth > 0 && state.Peek() == NodeType.Array; } }
+        public bool InConstructor { get { return !empty && Depth > 0 && state.Peek() == NodeType.Constructor; } }
 
         public void WriteStartArray() {
             BeginValue();
             writer.Write("[");
-            state.Push(true);
+            state.Push(NodeType.Array);
             empty = false;
             itemStarted = false;
         }
         public void WriteStartObject() {
             BeginValue();
             writer.Write("{");
-            state.Push(false);
+            state.Push(NodeType.Object);
+            empty = false;
+            itemStarted = false;
+        }
+        public void WriteStartConstructor(string typeName) {
+            BeginValue();
+            writer.Write("new ");
+            writer.Write(typeName);
+            writer.Write('(');
+            state.Push(NodeType.Constructor);
             empty = false;
             itemStarted = false;
         }
@@ -41,6 +54,8 @@ namespace Liquid.Json {
                 writer.Write(']');
             } else if (InObject) {
                 writer.Write('}');
+            } else if (InConstructor) {
+                writer.Write(')');
             } else throw new NotSupportedException();
             itemStarted = true;
             state.Pop();
@@ -166,7 +181,7 @@ namespace Liquid.Json {
                 writer.Write(Json.EscapeString(named));
                 named = null;
                 writer.Write(": ");
-            } else if (InArray) {
+            } else if (InArray || InConstructor) {
                 if (itemStarted)
                     writer.Write(", ");
             }
@@ -179,12 +194,6 @@ namespace Liquid.Json {
                 throw new NotSupportedException();
             this.named = name;
             return this;
-        }
-
-        [Obsolete("Do not use this!", false)]
-        public void WriteLiteralValue(string str) {
-            BeginValue();
-            writer.Write(str);
         }
     }
 }

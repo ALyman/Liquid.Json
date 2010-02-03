@@ -68,6 +68,8 @@
     <Compile Include="Serialization\Reals.cs" />
     <Compile Include="Serialization\Strings.cs" />
     <Compile Include="TestClasses.cs" />
+    <Compile Include="Writer\Arrays.cs" />
+    <Compile Include="Writer\Constructors.cs" />
     <Compile Include="Writer\Objects.cs" />
     <Compile Include="Writer\Strings.cs" />
     <Compile Include="Writer\Integers.cs" />

@@ -38,10 +38,10 @@ namespace Liquid.Json.Tests.Serialization {
                 .Setup(s => s.Serialize(0, It.IsAny<JsonSerializationContext>()))
                 .Callback((int value, JsonSerializationContext context) => {
                     Assert.AreEqual(0, value);
-                    context.Writer.WriteLiteralValue("xxx");
+                    context.Writer.WriteValue(456);
                 }).Verifiable("Didn't get the serializer from the factory")
                 ;
-            Assert.AreEqual("xxx", serializer.Serialize<Int32>(0));
+            Assert.AreEqual("456", serializer.Serialize<Int32>(0));
             typeSerializer.VerifyAll();
         }
     }
