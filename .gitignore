@@ -1,5 +1,5 @@
 *.suo
 *.user
 obj
-bin
 TestResults
+build 
