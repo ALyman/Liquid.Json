@@ -61,6 +61,7 @@
     <Compile Include="Reader\Keywords.cs" />
     <Compile Include="Reader\Reals.cs" />
     <Compile Include="Serialization\Arrays.cs" />
+    <Compile Include="Serialization\ComplexObjects.cs" />
     <Compile Include="Serialization\Dictionaries.cs" />
     <Compile Include="Serialization\Extensibility.cs" />
     <Compile Include="Serialization\Integers.cs" />

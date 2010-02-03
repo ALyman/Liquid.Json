@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Linq.Expressions;
 
 namespace Liquid.Json {
     public class JsonSerializer {
@@ -68,10 +69,14 @@ namespace Liquid.Json {
             if (@object == null) {
                 context.Writer.WriteNull();
             } else {
+                context.BeforeSerializing(@object);
                 var s = GetSerializer<T>();
                 s.Serialize(@object, context);
+                context.AfterSerializing(@object);
             }
         }
+
+        delegate void SerializeDelegate(object @object, JsonSerializationContext context);
 
         public string SerializeAs(Type type, object @object) {
             var writer = new StringWriter();
@@ -91,7 +96,18 @@ namespace Liquid.Json {
         internal void SerializeAs(Type type, object @object, JsonSerializationContext context) {
             var m = SerializeContextMethod
                 .MakeGenericMethod(type);
-            m.Invoke(this, new object[] { @object, context });
+            var objectParam = Expression.Parameter(typeof(object), "object");
+            var contextParam = Expression.Parameter(typeof(JsonSerializationContext), "context");
+            var lambda = Expression.Lambda<SerializeDelegate>(
+                Expression.Call(
+                    Expression.Constant(this),
+                    m,
+                    Expression.Convert(objectParam, type),
+                    contextParam
+                ),
+                objectParam, contextParam
+            );
+            lambda.Compile()(@object, context);
         }
 
         protected IJsonTypeSerializer<T> GetSerializer<T>() {
