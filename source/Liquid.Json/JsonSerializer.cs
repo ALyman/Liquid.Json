@@ -58,12 +58,15 @@ namespace Liquid.Json {
             }
         }
         public void Serialize<T>(T value, TextWriter writer) {
+            Serialize<T>(value, new JsonWriter(writer));
+        }
+        public void Serialize<T>(T value, JsonWriter writer) {
             var context = new JsonSerializationContext(this, writer);
             Serialize(value, context);
         }
         internal void Serialize<T>(T value, JsonSerializationContext context) {
             if (value == null) {
-                context.Write("null");
+                context.Writer.WriteNull();
             } else {
                 var s = GetSerializer<T>();
                 s.Serialize(value, context);

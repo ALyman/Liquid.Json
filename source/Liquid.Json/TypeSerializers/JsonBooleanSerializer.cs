@@ -6,10 +6,7 @@ using System.Text;
 namespace Liquid.Json.TypeSerializers {
     class JsonBooleanSerializer : IJsonTypeSerializer<Boolean> {
         public void Serialize(Boolean value, JsonSerializationContext context) {
-            if (value)
-                context.Write("true");
-            else
-                context.Write("false");
+            context.Writer.WriteValue(value);
         }
 
 

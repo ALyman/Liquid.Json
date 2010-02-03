@@ -9,7 +9,7 @@ namespace Liquid.Json.TypeSerializers {
         static readonly DateTime EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         public void Serialize(DateTime value, JsonSerializationContext context) {
             var span = value - EPOCH;
-            context.Write(string.Format("new Date({0})", (long)span.TotalSeconds));
+            context.Writer.WriteLiteralValue(string.Format("new Date({0})", (long)span.TotalSeconds));
         }
 
         public DateTime Deserialize(JsonDeserializationContext context) {

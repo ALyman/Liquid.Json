@@ -7,19 +7,13 @@ using System.IO;
 namespace Liquid.Json {
     public class JsonSerializationContext {
         JsonSerializer serializer;
-        TextWriter writer;
 
-        internal JsonSerializationContext(JsonSerializer serializer, TextWriter writer) {
+        internal JsonSerializationContext(JsonSerializer serializer, JsonWriter writer) {
             this.serializer = serializer;
-            this.writer = writer;
+            this.Writer = writer;
         }
 
-        public void Write(char ch) {
-            writer.Write(ch);
-        }
-        public void Write(string str) {
-            writer.Write(str);
-        }
+        public JsonWriter Writer { get; private set; }
 
         public IFormatProvider FormatProvider { get { return serializer.FormatProvider; } }
 

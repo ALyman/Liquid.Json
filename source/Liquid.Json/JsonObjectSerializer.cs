@@ -11,21 +11,18 @@ namespace Liquid.Json {
         const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public;
 
         public void Serialize(T value, JsonSerializationContext context) {
-            context.Write('{');
+            context.Writer.WriteStartObject();
             bool first = true;
             foreach (var member in SelectMembers()) {
                 SerializeMember(value, member, first, context);
                 if (first)
                     first = false;
             }
-            context.Write('}');
+            context.Writer.WriteEnd();
         }
 
         protected virtual void SerializeMember(T value, MemberInfo member, bool first, JsonSerializationContext context) {
-            if (!first)
-                context.Write(", ");
             SerializeName(value, member, member.Name, context);
-            context.Write(": ");
             Type memberType;
             object memberValue;
 
@@ -43,7 +40,7 @@ namespace Liquid.Json {
             SerializeValue(value, member, memberType, memberValue, context);
         }
         protected virtual void SerializeName(T value, MemberInfo member, string memberName, JsonSerializationContext context) {
-            context.Serialize(memberName);
+            context.Writer.WriteName(memberName);
         }
         protected virtual void SerializeValue(T value, MemberInfo member, Type memberType, object memberValue, JsonSerializationContext context) {
             context.SerializeAs(memberType, memberValue);

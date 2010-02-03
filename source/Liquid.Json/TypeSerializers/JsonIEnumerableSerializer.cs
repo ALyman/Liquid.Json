@@ -9,21 +9,14 @@ namespace Liquid.Json.TypeSerializers {
     class JsonIEnumerableSerializer<T> : IJsonTypeSerializer<T>
     where T : IEnumerable {
         public void Serialize(T value, JsonSerializationContext context) {
-            context.Write('[');
-            bool first = true;
+            context.Writer.WriteStartArray();
             foreach (var item in value) {
-                if (first)
-                    first = false;
-                else
-                    context.Write(", ");
                 if (item == null)
                     context.Serialize(item);
-                else {
-                    var type = item.GetType();
-                    context.SerializeAs(type, item);
-                }
+                else 
+                    context.SerializeAs(item.GetType(), item);
             }
-            context.Write(']');
+            context.Writer.WriteEnd();
         }
 
 
@@ -34,16 +27,11 @@ namespace Liquid.Json.TypeSerializers {
     class JsonIEnumerableSerializer<T, S> : IJsonTypeSerializer<T>
         where T : IEnumerable<S> {
         public void Serialize(T value, JsonSerializationContext context) {
-            context.Write('[');
-            bool first = true;
+            context.Writer.WriteStartArray();
             foreach (var item in value) {
-                if (first)
-                    first = false;
-                else
-                    context.Write(", ");
                 context.Serialize<S>(item);
             }
-            context.Write(']');
+            context.Writer.WriteEnd();
         }
 
 

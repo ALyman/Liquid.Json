@@ -8,7 +8,7 @@ using System.Globalization;
 namespace Liquid.Json.TypeSerializers {
     class JsonDecimalSerializer : IJsonTypeSerializer<Decimal> {
         public void Serialize(decimal value, JsonSerializationContext context) {
-            context.Write(value.ToString(context.FormatProvider));
+            context.Writer.WriteValue(value, context.FormatProvider);
         }
 
         public Decimal Deserialize(JsonDeserializationContext context) {

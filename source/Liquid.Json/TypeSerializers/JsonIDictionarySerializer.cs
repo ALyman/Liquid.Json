@@ -8,16 +8,10 @@ using System.IO;
 namespace Liquid.Json.TypeSerializers {
     class JsonIDictionarySerializer<T> : IJsonTypeSerializer<T> where T : IDictionary {
         public void Serialize(T value, JsonSerializationContext context) {
-            context.Write('{');
-            bool first = true;
+            context.Writer.WriteStartObject();
             foreach (var key in value.Keys) {
-                if (first)
-                    first = false;
-                else
-                    context.Write(", ");
                 var item = value[key];
-                context.Serialize(key.ToString());
-                context.Write(": ");
+                context.Writer.WriteName(key.ToString());
                 if (item == null)
                     context.Serialize(item);
                 else {
@@ -25,7 +19,7 @@ namespace Liquid.Json.TypeSerializers {
                     context.SerializeAs(type, item);
                 }
             }
-            context.Write('}');
+            context.Writer.WriteEnd();
         }
 
 
@@ -35,18 +29,12 @@ namespace Liquid.Json.TypeSerializers {
     }
     class JsonIDictionarySerializer<T, K, V> : IJsonTypeSerializer<T> where T : IDictionary<K,V> {
         public void Serialize(T value, JsonSerializationContext context) {
-            context.Write('{');
-            bool first = true;
+            context.Writer.WriteStartObject();
             foreach (var item in value) {
-                if (first)
-                    first = false;
-                else
-                    context.Write(", ");
-                context.Serialize(item.Key.ToString());
-                context.Write(": ");
+                context.Writer.WriteName(item.Key.ToString());
                 context.Serialize<V>(item.Value);
             }
-            context.Write('}');
+            context.Writer.WriteEnd();
         }
 
 

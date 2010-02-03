@@ -12,7 +12,7 @@ namespace Liquid.Json.TypeSerializers {
             if (n.HasValue)
                 context.Serialize(n.Value);
             else
-                context.Write("null");
+                context.Writer.WriteNull();
         }
 
 

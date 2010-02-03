@@ -17,7 +17,11 @@ namespace Liquid.Json.TypeSerializers {
         }
 
         public void Serialize(T value, JsonSerializationContext context) {
-            context.Write(value.ToString(null, context.FormatProvider));
+            if (typeof(T) == typeof(Single))
+                context.Writer.WriteValue((Single)(object)value, context.FormatProvider);
+            else if (typeof(T) == typeof(Double))
+                context.Writer.WriteValue((Double)(object)value, context.FormatProvider);
+            else throw new NotSupportedException();
         }
 
         public T Deserialize(JsonDeserializationContext context) {

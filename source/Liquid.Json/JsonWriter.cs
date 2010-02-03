@@ -98,6 +98,54 @@ namespace Liquid.Json {
             writer.Write(value);
         }
 
+
+        public void WriteValue(SByte value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+        public void WriteValue(Int16 value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+        public void WriteValue(Int32 value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+        public void WriteValue(Int64 value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
+        public void WriteValue(Byte value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+        public void WriteValue(UInt16 value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+        public void WriteValue(UInt32 value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+        public void WriteValue(UInt64 value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
+        public void WriteValue(Single value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+        public void WriteValue(Double value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+        public void WriteValue(Decimal value, IFormatProvider formatProvider) {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
         public void WriteValue(Boolean value) {
             BeginValue();
             writer.Write(value ? "true" : "false");
@@ -131,6 +179,12 @@ namespace Liquid.Json {
                 throw new NotSupportedException();
             this.named = name;
             return this;
+        }
+
+        [Obsolete("Do not use this!", false)]
+        public void WriteLiteralValue(string str) {
+            BeginValue();
+            writer.Write(str);
         }
     }
 }

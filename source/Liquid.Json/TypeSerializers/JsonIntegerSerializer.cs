@@ -18,15 +18,31 @@ namespace Liquid.Json.TypeSerializers {
         }
 
         public void Serialize(T value, JsonSerializationContext context) {
-            context.Write(value.ToString(null, context.FormatProvider));
+            if (typeof(T) == typeof(SByte))
+                context.Writer.WriteValue((SByte)(object)value, context.FormatProvider);
+            else if (typeof(T) == typeof(Int16))
+                context.Writer.WriteValue((Int16)(object)value, context.FormatProvider);
+            else if (typeof(T) == typeof(Int32))
+                context.Writer.WriteValue((Int32)(object)value, context.FormatProvider);
+            else if (typeof(T) == typeof(Int64))
+                context.Writer.WriteValue((Int64)(object)value, context.FormatProvider);
+            else if (typeof(T) == typeof(Byte))
+                context.Writer.WriteValue((Byte)(object)value, context.FormatProvider);
+            else if (typeof(T) == typeof(UInt16))
+                context.Writer.WriteValue((UInt16)(object)value, context.FormatProvider);
+            else if (typeof(T) == typeof(UInt32))
+                context.Writer.WriteValue((UInt32)(object)value, context.FormatProvider);
+            else if (typeof(T) == typeof(UInt64))
+                context.Writer.WriteValue((UInt64)(object)value, context.FormatProvider);
+            else throw new NotSupportedException();
         }
 
         public T Deserialize(JsonDeserializationContext context) {
             T result;
             bool success = TryParse(
                 context.Reader.ReadNextAs(JsonTokenType.Integer),
-                NumberStyles.Any, 
-                context.FormatProvider, 
+                NumberStyles.Any,
+                context.FormatProvider,
                 out result
             );
             if (!success)
