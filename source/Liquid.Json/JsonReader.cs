@@ -5,19 +5,40 @@ using System.Text;
 using System.IO;
 
 namespace Liquid.Json {
+    /// <summary>
+    /// A reader class for JSON-formatted data
+    /// </summary>
     public class JsonReader {
         TextReader reader;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonReader"/> class.
+        /// </summary>
+        /// <param name="reader">The reader that contains the data.</param>
         public JsonReader(TextReader reader) {
             this.reader = reader;
         }
 
+        /// <summary>
+        /// Gets or sets the token type.
+        /// </summary>
+        /// <value>The token type.</value>
         public JsonTokenType Token { get; private set; }
+        /// <summary>
+        /// Gets the text for the current token.
+        /// </summary>
+        /// <value>The text.</value>
         public string Text { get { return buffer.ToString(); } }
 
         StringBuilder buffer = new StringBuilder();
 
         bool undone = false;
 
+        /// <summary>
+        /// Reads the next token.
+        /// </summary>
+        /// <returns>
+        /// 	<c>true</c> if there was a token to be read; otherwise, <c>false</c>.
+        /// </returns>
         public bool ReadNext() {
             if (undone) {
                 undone = false;
@@ -48,6 +69,11 @@ namespace Liquid.Json {
                     throw new NotImplementedException();
             }
         }
+        /// <summary>
+        /// Reads the next token, and matches it to a set of expected token types.
+        /// </summary>
+        /// <param name="expectedTypes">The expected types.</param>
+        /// <returns>The text of the token</returns>
         public string ReadNextAs(params JsonTokenType[] expectedTypes) {
             if (!ReadNext())
                 throw new JsonDeserializationException();
@@ -56,6 +82,9 @@ namespace Liquid.Json {
             return Text;
         }
 
+        /// <summary>
+        /// Undoes the last read.
+        /// </summary>
         public void UndoRead() {
             if (undone)
                 throw new NotSupportedException();
