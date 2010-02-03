@@ -10,8 +10,7 @@ namespace Liquid.Json.Tests.Reader {
     public class Strings {
         public TestContext TestContext { get; set; }
 
-
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsNonEscapedString() {
             var sr = new StringReader("\"hello, world\"");
             var reader = new JsonReader(sr);
@@ -21,7 +20,7 @@ namespace Liquid.Json.Tests.Reader {
             var serializer = new JsonSerializer();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsEscapedQuoteString() {
             var sr = new StringReader("\"this is escaped: \\\"\"");
             var reader = new JsonReader(sr);

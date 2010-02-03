@@ -10,7 +10,7 @@ namespace Liquid.Json.Tests.Serialization {
     public class Dictionaries {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void StringDictionary() {
             var serializer = new JsonSerializer();
             var dict = new Dictionary<string, string> {
@@ -21,7 +21,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("{\"a\": \"b\", \"c\": \"d\", \"e\": \"f\"}", serializer.Serialize(dict));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesHashtable() {
             var serializer = new JsonSerializer();
             var dict = new Hashtable {
@@ -32,7 +32,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("{\"a\": \"b\", \"c\": \"d\", \"e\": \"f\"}", serializer.Serialize(dict));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void IntDictionary() {
             var serializer = new JsonSerializer();
             var dict = new Dictionary<int, int> {
@@ -41,7 +41,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("{\"1\": 2, \"3\": 4, \"5\": 6}", serializer.Serialize(dict));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void NullDictionary() {
             var serializer = new JsonSerializer();
             var result = serializer.Serialize<IDictionary<string, string>>(null);

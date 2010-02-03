@@ -8,7 +8,7 @@ using Moq;
 namespace Liquid.Json.Tests.Serialization {
     [TestClass]
     public class ObjectExtensibility {
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void TestMethod1() {
             var factory = new JsonObjectSerializerFactory<X>()
                 .WithMember(x => x.B)

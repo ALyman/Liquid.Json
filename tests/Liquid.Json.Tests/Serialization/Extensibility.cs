@@ -11,7 +11,7 @@ namespace Liquid.Json.Tests.Serialization {
     public class Extensibility {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void UsesFactories() {
             var factory = new Mock<IJsonTypeSerializerFactory>(MockBehavior.Strict);
             var typeSerializer = new Mock<IJsonTypeSerializer<Int32>>(MockBehavior.Loose);
@@ -25,7 +25,7 @@ namespace Liquid.Json.Tests.Serialization {
             factory.VerifyAll();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void UsesCustomSerializer() {
             var factory = new Mock<IJsonTypeSerializerFactory>(MockBehavior.Loose);
             var typeSerializer = new Mock<IJsonTypeSerializer<Int32>>(MockBehavior.Strict);

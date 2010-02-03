@@ -48,6 +48,7 @@
     <Compile Include="JsonReader.cs" />
     <Compile Include="JsonSerializationContext.cs" />
     <Compile Include="JsonTokenType.cs" />
+    <Compile Include="JsonWriter.cs" />
     <Compile Include="TypeSerializers\DefaultJsonTypeSerializerFactory.cs" />
     <Compile Include="IJsonTypeSerializer.cs" />
     <Compile Include="IJsonTypeSerializerFactory.cs" />

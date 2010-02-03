@@ -9,49 +9,49 @@ namespace Liquid.Json.Tests.Serialization {
     public class Objects {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void EmptyObject() {
             var serializer = new JsonSerializer();
             var result = serializer.Serialize(new EmptyObject_Class());
             Assert.AreEqual("{}", result);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void ObjectWithProperties() {
             var serializer = new JsonSerializer();
             var result = serializer.Serialize(new ObjectWithProperties_Class { A = 1, B = 2, C = 3 });
             Assert.AreEqual("{\"A\": 1, \"B\": 2, \"C\": 3}", result);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void ObjectWithFields() {
             var serializer = new JsonSerializer();
             var result = serializer.Serialize(new ObjectWithFields_Class { A = 1, B = 2, C = 3 });
             Assert.AreEqual("{\"A\": 1, \"B\": 2, \"C\": 3}", result);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void ObjectWithProperties_And_Fields() {
             var serializer = new JsonSerializer();
             var result = serializer.Serialize(new ObjectWithProperties_And_Fields_Class { A = 1, B = 2, C = 3 });
             Assert.AreEqual("{\"A\": 1, \"B\": 2, \"C\": 3}", result);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void RespectsIgnoreAttributeOnProperties() {
             var serializer = new JsonSerializer();
             var result = serializer.Serialize(new RespectsIgnoreAttributeOnProperties_Class { A = 1, B = 2, C = 3 });
             Assert.AreEqual("{\"A\": 1, \"B\": 2}", result);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void RespectsIgnoreAttributeOnFields() {
             var serializer = new JsonSerializer();
             var result = serializer.Serialize(new RespectsIgnoreAttributeOnFields_Class { A = 1, B = 2, C = 3 });
             Assert.AreEqual("{\"A\": 1, \"B\": 2}", result);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void NullObject() {
             var serializer = new JsonSerializer();
             var result = serializer.Serialize<RespectsIgnoreAttributeOnFields_Class>(null);

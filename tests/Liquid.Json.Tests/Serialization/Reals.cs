@@ -9,7 +9,7 @@ namespace Liquid.Json.Tests.Serialization {
     public class Reals {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesSingle() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Single>(0f));
@@ -19,7 +19,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("-1.5", serializer.Serialize<Single>(-1.5f));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesDouble() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Double>(0));
@@ -29,7 +29,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("-1.5", serializer.Serialize<Double>(-1.5));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesDecimal() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Decimal>(0m));

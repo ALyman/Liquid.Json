@@ -9,13 +9,13 @@ namespace Liquid.Json.Tests.Serialization {
     public class Strings {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void Serializes_NonEscaped_String() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("\"hello, world\"", serializer.Serialize<string>("hello, world"));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void Escapes_Quote() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("\"this is escaped: \\\"\"", serializer.Serialize<string>("this is escaped: \""));

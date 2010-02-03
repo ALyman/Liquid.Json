@@ -9,7 +9,7 @@ using Liquid.Json;
 namespace Liquid.Json.Tests.Reader {
     [TestClass]
     public class Integers {
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsInteger() {
             var sr = new StringReader("123");
             var reader = new JsonReader(sr);
@@ -17,7 +17,7 @@ namespace Liquid.Json.Tests.Reader {
             Assert.AreEqual(JsonTokenType.Integer, reader.Token);
             Assert.AreEqual("123", reader.Text);
         }
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsNegativeInteger() {
             var sr = new StringReader("-123");
             var reader = new JsonReader(sr);

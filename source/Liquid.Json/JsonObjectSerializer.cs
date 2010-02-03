@@ -80,7 +80,7 @@ namespace Liquid.Json {
                     throw new JsonDeserializationException();
                 var name = context.Reader.Text;
                 if (name.StartsWith("\""))
-                    name = JsonStringSerializer.Unescape(name);
+                    name = Json.UnescapeString(name);
                 MemberInfo selectedMember;
                 var canidates = members[name.ToLower()];
                 switch (canidates.Count()) {

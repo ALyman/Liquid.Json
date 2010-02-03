@@ -8,7 +8,7 @@ using System.IO;
 namespace Liquid.Json.Tests.Reader {
     [TestClass]
     public class Symbols {
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsObjectStart() {
             var sr = new StringReader("{");
             var reader = new JsonReader(sr);
@@ -17,7 +17,7 @@ namespace Liquid.Json.Tests.Reader {
             Assert.AreEqual("{", reader.Text);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsObjectEnd() {
             var sr = new StringReader("}");
             var reader = new JsonReader(sr);
@@ -26,7 +26,7 @@ namespace Liquid.Json.Tests.Reader {
             Assert.AreEqual("}", reader.Text);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsArrayStart() {
             var sr = new StringReader("[");
             var reader = new JsonReader(sr);
@@ -35,7 +35,7 @@ namespace Liquid.Json.Tests.Reader {
             Assert.AreEqual("[", reader.Text);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsArrayEnd() {
             var sr = new StringReader("]");
             var reader = new JsonReader(sr);
@@ -44,7 +44,7 @@ namespace Liquid.Json.Tests.Reader {
             Assert.AreEqual("]", reader.Text);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsComma() {
             var sr = new StringReader(",");
             var reader = new JsonReader(sr);
@@ -53,7 +53,7 @@ namespace Liquid.Json.Tests.Reader {
             Assert.AreEqual(",", reader.Text);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Reader")]
         public void ReadsColon() {
             var sr = new StringReader(":");
             var reader = new JsonReader(sr);

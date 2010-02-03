@@ -10,7 +10,7 @@ namespace Liquid.Json.Tests.Serialization {
     public class Integers {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesSByte() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<SByte>(0));
@@ -18,7 +18,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("-1", serializer.Serialize<SByte>(-1));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesInt16() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Int16>(0));
@@ -26,7 +26,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("-1", serializer.Serialize<Int16>(-1));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesInt32() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Int32>(0));
@@ -34,7 +34,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("-1", serializer.Serialize<Int32>(-1));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesInt64() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Int64>(0));
@@ -42,7 +42,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("-1", serializer.Serialize<Int64>(-1));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesByte() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Byte>(0));
@@ -50,7 +50,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("255", serializer.Serialize<Byte>(Byte.MaxValue));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesUInt16() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<UInt16>(0));
@@ -58,7 +58,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("65535", serializer.Serialize<UInt16>(UInt16.MaxValue));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesUInt32() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<UInt32>(0));
@@ -66,7 +66,7 @@ namespace Liquid.Json.Tests.Serialization {
             Assert.AreEqual("4294967295", serializer.Serialize<UInt32>(UInt32.MaxValue));
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("Serialization")]
         public void SerializesUInt64() {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<UInt64>(0));
