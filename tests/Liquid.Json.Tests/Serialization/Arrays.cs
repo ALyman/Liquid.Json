@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Liquid.Json.Tests.Serialization {
+    [TestClass]
+    public class Arrays {
+        public TestContext TestContext { get; set; }
+
+        [TestMethod]
+        public void SerializesArray() {
+            var serializer = new JsonSerializer();
+            Assert.AreEqual("[0, 1, 2]", serializer.Serialize(new Int32[] { 0, 1, 2 }));
+        }
+
+        [TestMethod]
+        public void SerializesGenericList() {
+            var serializer = new JsonSerializer();
+            Assert.AreEqual("[0, 1, 2]", serializer.Serialize(new List<Int32> { 0, 1, 2 }));
+        }
+
+        [TestMethod]
+        public void SerializesGenericEnumerable() {
+            var serializer = new JsonSerializer();
+            Assert.AreEqual("[0, 1, 2]", serializer.Serialize(new Int32[] { 0, 1, 2 }.Select(i => i)));
+        }
+    }
+}

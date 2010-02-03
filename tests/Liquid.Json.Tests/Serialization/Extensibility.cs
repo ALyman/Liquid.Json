@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.IO;
+
+namespace Liquid.Json.Tests.Serialization {
+    [TestClass]
+    public class Extensibility {
+        public TestContext TestContext { get; set; }
+
+        [TestMethod]
+        public void UsesFactories() {
+            var factory = new Mock<IJsonTypeSerializerFactory>(MockBehavior.Strict);
+            var typeSerializer = new Mock<IJsonTypeSerializer<Int32>>(MockBehavior.Loose);
+            var serializer = new JsonSerializer(factory.Object);
+            factory
+                .Setup(f => f.CreateSerializer<Int32>(serializer))
+                .Returns(typeSerializer.Object)
+                .Verifiable("Didn't get the serializer from the factory")
+                ;
+            serializer.Serialize<Int32>(0);
+            factory.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UsesCustomSerializer() {
+            var factory = new Mock<IJsonTypeSerializerFactory>(MockBehavior.Loose);
+            var typeSerializer = new Mock<IJsonTypeSerializer<Int32>>(MockBehavior.Strict);
+            var serializer = new JsonSerializer(factory.Object);
+            factory
+                .Setup(f => f.CreateSerializer<Int32>(serializer))
+                .Returns(typeSerializer.Object)
+                ;
+            typeSerializer
+                .Setup(s => s.Serialize(0, It.IsAny<TextWriter>(), serializer))
+                .Callback((int value, TextWriter writer, JsonSerializer ser) => {
+                    writer.Write("xxx");
+                }).Verifiable("Didn't get the serializer from the factory")
+                ;
+            Assert.AreEqual("xxx", serializer.Serialize<Int32>(0));
+            typeSerializer.VerifyAll();
+        }
+    }
+}
