@@ -54,6 +54,7 @@
     <Compile Include="Serialization\Dictionaries.cs" />
     <Compile Include="Serialization\Extensibility.cs" />
     <Compile Include="Serialization\Integers.cs" />
+    <Compile Include="Serialization\ObjectExtensibility.cs" />
     <Compile Include="Serialization\Objects.cs" />
     <Compile Include="Serialization\Other.cs" />
     <Compile Include="Serialization\Reals.cs" />
