@@ -8,48 +8,48 @@ namespace Liquid.Json.Mvc {
     /// <summary>
     /// Provides extension methods for the System.Web.Mvc.Controller class
     /// </summary>
-    public static class ControllerExtension {
+    public abstract class JsonController : Controller {
         /// <summary>
-        /// Creates a LiquidJsonActionResult for the specified object
+        /// Creates a LiquidJsonResult for the specified object
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controller">The controller.</param>
         /// <param name="object">The object.</param>
-        /// <returns>The LiquidJsonActionResult for the specified object</returns>
-        public static LiquidJsonActionResult<T> LiquidJson<T>(this Controller controller, T @object) {
-            return new LiquidJsonActionResult<T>(@object);
+        /// <returns>The LiquidJsonResult for the specified object</returns>
+        protected LiquidJsonResult<T> Json<T>(T @object) {
+            return new LiquidJsonResult<T>(@object);
         }
 
         /// <summary>
-        /// Creates a LiquidJsonActionResult for the specified object
+        /// Creates a LiquidJsonResult for the specified object
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controller">The controller.</param>
         /// <param name="object">The object.</param>
         /// <param name="behavior">The behavior.</param>
         /// <returns>
-        /// The LiquidJsonActionResult for the specified object
+        /// The LiquidJsonResult for the specified object
         /// </returns>
-        public static LiquidJsonActionResult<T> LiquidJson<T>(this Controller controller, T @object, JsonRequestBehavior behavior) {
-            return new LiquidJsonActionResult<T>(@object, behavior);
+        protected LiquidJsonResult<T> Json<T>(T @object, JsonRequestBehavior behavior) {
+            return new LiquidJsonResult<T>(@object, behavior);
         }
         
         /// <summary>
-        /// Creates a LiquidJsonActionResult for the specified object
+        /// Creates a LiquidJsonResult for the specified object
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controller">The controller.</param>
         /// <param name="object">The object.</param>
         /// <param name="serializer">The serializer.</param>
         /// <returns>
-        /// The LiquidJsonActionResult for the specified object
+        /// The LiquidJsonResult for the specified object
         /// </returns>
-        public static LiquidJsonActionResult<T> LiquidJson<T>(this Controller controller, T @object, JsonSerializer serializer) {
-            return new LiquidJsonActionResult<T>(@object, serializer);
+        protected LiquidJsonResult<T> Json<T>(T @object, JsonSerializer serializer) {
+            return new LiquidJsonResult<T>(@object, serializer);
         }
 
         /// <summary>
-        /// Creates a LiquidJsonActionResult for the specified object
+        /// Creates a LiquidJsonResult for the specified object
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="controller">The controller.</param>
@@ -57,10 +57,10 @@ namespace Liquid.Json.Mvc {
         /// <param name="behavior">The behavior.</param>
         /// <param name="serializer">The serializer.</param>
         /// <returns>
-        /// The LiquidJsonActionResult for the specified object
+        /// The LiquidJsonResult for the specified object
         /// </returns>
-        public static LiquidJsonActionResult<T> LiquidJson<T>(this Controller controller, T @object, JsonRequestBehavior behavior, JsonSerializer serializer) {
-            return new LiquidJsonActionResult<T>(@object, behavior, serializer);
+        protected LiquidJsonResult<T> Json<T>(T @object, JsonRequestBehavior behavior, JsonSerializer serializer) {
+            return new LiquidJsonResult<T>(@object, behavior, serializer);
         }
     }
 }

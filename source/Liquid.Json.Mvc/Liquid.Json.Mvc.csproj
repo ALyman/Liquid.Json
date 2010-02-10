@@ -46,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControllerExtension.cs" />
-    <Compile Include="LiquidJsonActionResult.cs" />
+    <Compile Include="JsonController.cs" />
+    <Compile Include="LiquidJsonResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

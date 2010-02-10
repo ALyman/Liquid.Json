@@ -9,40 +9,40 @@ namespace Liquid.Json.Mvc {
     /// An action that uses the Liquid.Json serialization API to serialize an object
     /// </summary>
     /// <typeparam name="T">The type of the result</typeparam>
-    public class LiquidJsonActionResult<T> : ActionResult {
+    public class LiquidJsonResult<T> : ActionResult {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiquidJsonActionResult&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="LiquidJsonResult&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="object">The result object.</param>
-        public LiquidJsonActionResult(T @object)
+        public LiquidJsonResult(T @object)
             : this(@object, JsonRequestBehavior.DenyGet, null) {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiquidJsonActionResult&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="LiquidJsonResult&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="object">The result object.</param>
         /// <param name="behavior">The behavior of the action.</param>
-        public LiquidJsonActionResult(T @object, JsonRequestBehavior behavior)
+        public LiquidJsonResult(T @object, JsonRequestBehavior behavior)
             : this(@object, behavior, null) {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiquidJsonActionResult&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="LiquidJsonResult&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="object">The result object.</param>
         /// <param name="serializer">The serializer.</param>
-        public LiquidJsonActionResult(T @object, JsonSerializer serializer)
+        public LiquidJsonResult(T @object, JsonSerializer serializer)
             : this(@object, JsonRequestBehavior.DenyGet, serializer) {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LiquidJsonActionResult&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="LiquidJsonResult&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="object">The result object.</param>
         /// <param name="behavior">The behavior of the action.</param>
         /// <param name="serializer">The serializer.</param>
-        public LiquidJsonActionResult(T @object, JsonRequestBehavior behavior, JsonSerializer serializer) {
+        public LiquidJsonResult(T @object, JsonRequestBehavior behavior, JsonSerializer serializer) {
             this.Object = @object;
             this.Behavior = behavior;
             this.Serializer = serializer ?? new JsonSerializer();

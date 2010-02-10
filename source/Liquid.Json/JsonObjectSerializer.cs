@@ -11,7 +11,7 @@ namespace Liquid.Json {
     /// Serializes an object of the specified type
     /// </summary>
     /// <typeparam name="T">The tye of object being serialized.</typeparam>
-    public class JsonObjectSerializer<T> : IJsonTypeSerializer<T> {
+    public class JsonObjectSerializer<T> : IJsonTypeInplaceSerializer<T> {
         const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public;
 
         /// <summary>
@@ -102,6 +102,35 @@ namespace Liquid.Json {
         /// <returns>The deserialzed value</returns>
         public T Deserialize(JsonDeserializationContext context) {
             var @object = Activator.CreateInstance<T>();
+            DeserializeInto(ref @object, context);
+            return @object;
+        }
+
+        /// <summary>
+        /// Deserializes the member.
+        /// </summary>
+        /// <param name="object">The @object.</param>
+        /// <param name="member">The member.</param>
+        /// <param name="context">The context.</param>
+        protected virtual void DeserializeMember(T @object, MemberInfo member, JsonDeserializationContext context) {
+            Type memberType = member.GetMemberType();
+            if (member.IsReadOnly()) {
+                var value = member.GetMemberValue(@object);
+                context.DeserializeInplace(value, memberType);
+            } else {
+                member.SetMemberValue(
+                    @object,
+                    context.DeserializeAs(memberType)
+                );
+            }
+        }
+
+        /// <summary>
+        /// Deserializes into the specified object.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="context">The context.</param>
+        public void DeserializeInto(ref T @object, JsonDeserializationContext context) {
             var members = (from m in SelectMembers()
                            let readOnly = m.IsReadOnly()
                            let type = m.GetMemberType()
@@ -141,26 +170,6 @@ namespace Liquid.Json {
             }
             if (context.Reader.Token != JsonTokenType.ObjectEnd)
                 throw new JsonDeserializationException();
-            return @object;
-        }
-
-        /// <summary>
-        /// Deserializes the member.
-        /// </summary>
-        /// <param name="object">The @object.</param>
-        /// <param name="member">The member.</param>
-        /// <param name="context">The context.</param>
-        protected virtual void DeserializeMember(T @object, MemberInfo member, JsonDeserializationContext context) {
-            Type memberType = member.GetMemberType();
-            if (member.IsReadOnly()) {
-                var value = member.GetMemberValue(@object);
-                context.DeserializeInplace(value, memberType);
-            } else {
-                member.SetMemberValue(
-                    @object, 
-                    context.DeserializeAs(memberType)
-                );
-            }
         }
     }
 }

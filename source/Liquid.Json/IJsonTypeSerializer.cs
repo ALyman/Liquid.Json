@@ -11,9 +11,9 @@ namespace Liquid.Json {
     /// <typeparam name="T">The type that can be serialized/deserialzed</typeparam>
     public interface IJsonTypeSerializer<T> {
         /// <summary>
-        /// Serializes the specified @object.
+        /// Serializes the specified object.
         /// </summary>
-        /// <param name="object">The @object.</param>
+        /// <param name="object">The object.</param>
         /// <param name="context">The context.</param>
         void Serialize(T @object, JsonSerializationContext context);
         /// <summary>
@@ -31,9 +31,9 @@ namespace Liquid.Json {
     public interface IJsonTypeInplaceSerializer<T>
     : IJsonTypeSerializer<T> {
         /// <summary>
-        /// Deserializes the into.
+        /// Deserializes into the specified object.
         /// </summary>
-        /// <param name="object">The @object.</param>
+        /// <param name="object">The object.</param>
         /// <param name="context">The context.</param>
         void DeserializeInto(ref T @object, JsonDeserializationContext context);
     }
