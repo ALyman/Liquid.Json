@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Liquid.Json.Tests.Deserialization {
+namespace Liquid.Json.Tests.Deserialization
+{
     [TestClass]
-    public class Arrays {
+    public class Arrays
+    {
         [TestMethod, TestCategory("Deserialization"), TestCategory("Array")]
-        public void DeserializesEmptyArray() {
+        public void DeserializesEmptyArray()
+        {
             var serializer = new JsonSerializer();
             var result = serializer.Deserialize<IList<int>>("[]");
             Assert.IsNotNull(result);
@@ -16,7 +17,8 @@ namespace Liquid.Json.Tests.Deserialization {
         }
 
         [TestMethod, TestCategory("Deserialization"), TestCategory("Array")]
-        public void DeserializesOneItemArray() {
+        public void DeserializesOneItemArray()
+        {
             var serializer = new JsonSerializer();
             var result = serializer.Deserialize<IList<int>>("[123]");
             Assert.IsNotNull(result);
@@ -25,7 +27,8 @@ namespace Liquid.Json.Tests.Deserialization {
         }
 
         [TestMethod, TestCategory("Deserialization"), TestCategory("Array")]
-        public void DeserializesTwoItemArray() {
+        public void DeserializesTwoItemArray()
+        {
             var serializer = new JsonSerializer();
             var result = serializer.Deserialize<IList<int>>("[123, 456]");
             Assert.IsNotNull(result);

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Liquid.Json.Tests.Deserialization {
+namespace Liquid.Json.Tests.Deserialization
+{
     [TestClass]
-    public class Dictionaries {
+    public class Dictionaries
+    {
         [TestMethod, TestCategory("Deserialization"), TestCategory("Dictionary")]
-        public void DeserializesEmptyDictionary() {
+        public void DeserializesEmptyDictionary()
+        {
             var serializer = new JsonSerializer();
             var result = serializer.Deserialize<IDictionary<string, int>>("{}");
             Assert.IsNotNull(result);
@@ -16,7 +17,8 @@ namespace Liquid.Json.Tests.Deserialization {
         }
 
         [TestMethod, TestCategory("Deserialization"), TestCategory("Dictionary")]
-        public void DeserializesOneItemDictionary() {
+        public void DeserializesOneItemDictionary()
+        {
             var serializer = new JsonSerializer();
             var result = serializer.Deserialize<IDictionary<string, int>>("{\"A\": 1}");
             Assert.IsNotNull(result);
@@ -26,7 +28,8 @@ namespace Liquid.Json.Tests.Deserialization {
         }
 
         [TestMethod, TestCategory("Deserialization"), TestCategory("Dictionary")]
-        public void DeserializesTwoItemDictionary() {
+        public void DeserializesTwoItemDictionary()
+        {
             var serializer = new JsonSerializer();
             var result = serializer.Deserialize<IDictionary<string, int>>("{\"A\": 1, \"B\": 2}");
             Assert.IsNotNull(result);

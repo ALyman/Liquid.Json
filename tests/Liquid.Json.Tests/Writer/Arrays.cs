@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Liquid.Json.Tests.Writer {
+namespace Liquid.Json.Tests.Writer
+{
     [TestClass]
-    public class Arrays {
+    public class Arrays
+    {
         [TestMethod, TestCategory("Writer")]
-        public void WritesEmptyArray() {
+        public void WritesEmptyArray()
+        {
             var sw = new StringWriter();
             var writer = new JsonWriter(sw);
             writer.WriteStartArray();
@@ -18,7 +18,8 @@ namespace Liquid.Json.Tests.Writer {
         }
 
         [TestMethod, TestCategory("Writer")]
-        public void WritesSinglePropertyArray() {
+        public void WritesSinglePropertyArray()
+        {
             var sw = new StringWriter();
             var writer = new JsonWriter(sw);
             writer.WriteStartArray();
@@ -28,7 +29,8 @@ namespace Liquid.Json.Tests.Writer {
         }
 
         [TestMethod, TestCategory("Writer")]
-        public void WritesTwoPropertyArray() {
+        public void WritesTwoPropertyArray()
+        {
             var sw = new StringWriter();
             var writer = new JsonWriter(sw);
             writer.WriteStartArray();

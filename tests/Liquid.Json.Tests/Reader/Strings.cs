@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Liquid.Json.Tests.Reader {
+namespace Liquid.Json.Tests.Reader
+{
     [TestClass]
-    public class Strings {
+    public class Strings
+    {
         public TestContext TestContext { get; set; }
 
         [TestMethod, TestCategory("Reader")]
-        public void ReadsNonEscapedString() {
+        public void ReadsNonEscapedString()
+        {
             var sr = new StringReader("\"hello, world\"");
             var reader = new JsonReader(sr);
             Assert.IsTrue(reader.ReadNext(), "Failed read");
@@ -21,7 +21,8 @@ namespace Liquid.Json.Tests.Reader {
         }
 
         [TestMethod, TestCategory("Reader")]
-        public void ReadsEscapedQuoteString() {
+        public void ReadsEscapedQuoteString()
+        {
             var sr = new StringReader("\"this is escaped: \\\"\"");
             var reader = new JsonReader(sr);
             Assert.IsTrue(reader.ReadNext(), "Failed read");

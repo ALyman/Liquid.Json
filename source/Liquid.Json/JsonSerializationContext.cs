@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 
-namespace Liquid.Json {
+namespace Liquid.Json
+{
     /// <summary>
     /// The context for serialization
     /// </summary>
-    public class JsonSerializationContext {
-        JsonSerializer serializer;
-        HashSet<object> serialized = new HashSet<object>();
+    public class JsonSerializationContext
+    {
+        private readonly HashSet<object> serialized = new HashSet<object>();
+        private readonly JsonSerializer serializer;
 
-        internal JsonSerializationContext(JsonSerializer serializer, JsonWriter writer) {
+        internal JsonSerializationContext(JsonSerializer serializer, JsonWriter writer)
+        {
             this.serializer = serializer;
-            this.Writer = writer;
+            Writer = writer;
         }
 
         /// <summary>
@@ -22,6 +22,7 @@ namespace Liquid.Json {
         /// </summary>
         /// <value>The JSON writer.</value>
         public JsonWriter Writer { get; private set; }
+
         /// <summary>
         /// Gets the format provider.
         /// </summary>
@@ -33,15 +34,18 @@ namespace Liquid.Json {
         /// </summary>
         /// <typeparam name="T">The type of object to be serialized.</typeparam>
         /// <param name="object">The object to be serialized.</param>
-        public void Serialize<T>(T @object) {
-            serializer.Serialize<T>(@object, this);
+        public void Serialize<T>(T @object)
+        {
+            serializer.Serialize(@object, this);
         }
+
         /// <summary>
         /// Serializes the specified object as the specified type.
         /// </summary>
         /// <param name="type">The type to be serialized.</param>
         /// <param name="object">The object serialized.</param>
-        public void SerializeAs(Type type, object @object) {
+        public void SerializeAs(Type type, object @object)
+        {
             serializer.SerializeAs(type, @object, this);
         }
 
@@ -50,8 +54,10 @@ namespace Liquid.Json {
         /// </summary>
         /// <typeparam name="T">The type of the object being deserialized</typeparam>
         /// <param name="object">The object being serialized.</param>
-        protected internal void BeforeSerializing<T>(T @object) {
-            if (!typeof(T).IsValueType && !serialized.Add(@object))
+        protected internal void BeforeSerializing<T>(T @object)
+        {
+            if (!typeof(T).IsValueType &&
+                !serialized.Add(@object))
                 throw new JsonSerializationException("Cycle detected in object graph");
         }
 
@@ -60,7 +66,8 @@ namespace Liquid.Json {
         /// </summary>
         /// <typeparam name="T">The type of the object that was deserialized</typeparam>
         /// <param name="object">The object that was serialized.</param>
-        protected internal void AfterSerializing<T>(T @object) {
+        protected internal void AfterSerializing<T>(T @object)
+        {
             serialized.Remove(@object);
         }
     }

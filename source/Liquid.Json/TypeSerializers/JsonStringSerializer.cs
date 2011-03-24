@@ -1,18 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 
-namespace Liquid.Json.TypeSerializers {
-    class JsonStringSerializer : IJsonTypeSerializer<string> {
-        public void Serialize(string @object, JsonSerializationContext context) {
+namespace Liquid.Json.TypeSerializers
+{
+    internal class JsonStringSerializer : IJsonTypeSerializer<string>
+    {
+        #region IJsonTypeSerializer<string> Members
+
+        public void Serialize(string @object, JsonSerializationContext context)
+        {
             context.Writer.WriteValue(@object);
         }
 
-        public string Deserialize(JsonDeserializationContext context) {
-            var str = context.Reader.ReadNextAs(JsonTokenType.String);
+        public string Deserialize(JsonDeserializationContext context)
+        {
+            string str = context.Reader.ReadNextAs(JsonTokenType.String);
             return Json.UnescapeString(str);
         }
+
+        #endregion
     }
 }

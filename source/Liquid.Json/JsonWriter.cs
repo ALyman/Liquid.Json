@@ -1,31 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Collections;
 
-namespace Liquid.Json {
+namespace Liquid.Json
+{
     /// <summary>
     /// Writes data in the JSON format
     /// </summary>
-    public class JsonWriter {
-        TextWriter writer;
+    public class JsonWriter
+    {
+        private readonly Stack<NodeType> state = new Stack<NodeType>();
+        private readonly TextWriter writer;
+        private bool empty = true;
+        private bool itemStarted;
+        private string named;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonWriter"/> class.
         /// </summary>
         /// <param name="writer">The writer in which data is written.</param>
-        public JsonWriter(TextWriter writer) {
+        public JsonWriter(TextWriter writer)
+        {
             this.writer = writer;
         }
-
-        enum NodeType { Array, Object, Constructor }
-
-        Stack<NodeType> state = new Stack<NodeType>();
-        bool empty = true;
-        bool itemStarted = false;
-        string named = null;
 
         /// <summary>
         /// Gets the current depth of the writer.
@@ -38,11 +35,13 @@ namespace Liquid.Json {
         /// </summary>
         /// <value><c>true</c> if in an object; otherwise, <c>false</c>.</value>
         public bool InObject { get { return !empty && Depth > 0 && state.Peek() == NodeType.Object; } }
+
         /// <summary>
         /// Gets a value indicating whether in an array.
         /// </summary>
         /// <value><c>true</c> if in an array; otherwise, <c>false</c>.</value>
         public bool InArray { get { return !empty && Depth > 0 && state.Peek() == NodeType.Array; } }
+
         /// <summary>
         /// Gets a value indicating whether in a constructor.
         /// </summary>
@@ -52,28 +51,33 @@ namespace Liquid.Json {
         /// <summary>
         /// Starts an array.
         /// </summary>
-        public void WriteStartArray() {
+        public void WriteStartArray()
+        {
             BeginValue();
             writer.Write("[");
             state.Push(NodeType.Array);
             empty = false;
             itemStarted = false;
         }
+
         /// <summary>
         /// Starts an object.
         /// </summary>
-        public void WriteStartObject() {
+        public void WriteStartObject()
+        {
             BeginValue();
             writer.Write("{");
             state.Push(NodeType.Object);
             empty = false;
             itemStarted = false;
         }
+
         /// <summary>
         /// Starts a constructor
         /// </summary>
         /// <param name="typeName">Name of the type being constructed.</param>
-        public void WriteStartConstructor(string typeName) {
+        public void WriteStartConstructor(string typeName)
+        {
             BeginValue();
             writer.Write("new ");
             writer.Write(typeName);
@@ -82,10 +86,12 @@ namespace Liquid.Json {
             empty = false;
             itemStarted = false;
         }
+
         /// <summary>
         /// Writes the end of the current object, array, or constructor.
         /// </summary>
-        public void WriteEnd() {
+        public void WriteEnd()
+        {
             if (InArray) {
                 writer.Write(']');
             } else if (InObject) {
@@ -101,7 +107,8 @@ namespace Liquid.Json {
         /// Writes the value.
         /// </summary>
         /// <param name="value">The value.</param>
-        public void WriteValue(string value) {
+        public void WriteValue(string value)
+        {
             BeginValue();
             writer.Write(Json.EscapeString(value));
         }
@@ -110,31 +117,8 @@ namespace Liquid.Json {
         /// Writes the value.
         /// </summary>
         /// <param name="value">The value.</param>
-        public void WriteValue(SByte value) {
-            BeginValue();
-            writer.Write(value);
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public void WriteValue(Int16 value) {
-            BeginValue();
-            writer.Write(value);
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public void WriteValue(Int32 value) {
-            BeginValue();
-            writer.Write(value);
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public void WriteValue(Int64 value) {
+        public void WriteValue(SByte value)
+        {
             BeginValue();
             writer.Write(value);
         }
@@ -143,31 +127,8 @@ namespace Liquid.Json {
         /// Writes the value.
         /// </summary>
         /// <param name="value">The value.</param>
-        public void WriteValue(Byte value) {
-            BeginValue();
-            writer.Write(value);
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public void WriteValue(UInt16 value) {
-            BeginValue();
-            writer.Write(value);
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public void WriteValue(UInt32 value) {
-            BeginValue();
-            writer.Write(value);
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        public void WriteValue(UInt64 value) {
+        public void WriteValue(Int16 value)
+        {
             BeginValue();
             writer.Write(value);
         }
@@ -176,23 +137,88 @@ namespace Liquid.Json {
         /// Writes the value.
         /// </summary>
         /// <param name="value">The value.</param>
-        public void WriteValue(Single value) {
+        public void WriteValue(Int32 value)
+        {
             BeginValue();
             writer.Write(value);
         }
+
         /// <summary>
         /// Writes the value.
         /// </summary>
         /// <param name="value">The value.</param>
-        public void WriteValue(Double value) {
+        public void WriteValue(Int64 value)
+        {
             BeginValue();
             writer.Write(value);
         }
+
         /// <summary>
         /// Writes the value.
         /// </summary>
         /// <param name="value">The value.</param>
-        public void WriteValue(Decimal value) {
+        public void WriteValue(Byte value)
+        {
+            BeginValue();
+            writer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void WriteValue(UInt16 value)
+        {
+            BeginValue();
+            writer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void WriteValue(UInt32 value)
+        {
+            BeginValue();
+            writer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void WriteValue(UInt64 value)
+        {
+            BeginValue();
+            writer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void WriteValue(Single value)
+        {
+            BeginValue();
+            writer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void WriteValue(Double value)
+        {
+            BeginValue();
+            writer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void WriteValue(Decimal value)
+        {
             BeginValue();
             writer.Write(value);
         }
@@ -202,34 +228,8 @@ namespace Liquid.Json {
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(SByte value, IFormatProvider formatProvider) {
-            BeginValue();
-            writer.Write(value.ToString(formatProvider));
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(Int16 value, IFormatProvider formatProvider) {
-            BeginValue();
-            writer.Write(value.ToString(formatProvider));
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(Int32 value, IFormatProvider formatProvider) {
-            BeginValue();
-            writer.Write(value.ToString(formatProvider));
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(Int64 value, IFormatProvider formatProvider) {
+        public void WriteValue(SByte value, IFormatProvider formatProvider)
+        {
             BeginValue();
             writer.Write(value.ToString(formatProvider));
         }
@@ -239,34 +239,8 @@ namespace Liquid.Json {
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(Byte value, IFormatProvider formatProvider) {
-            BeginValue();
-            writer.Write(value.ToString(formatProvider));
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(UInt16 value, IFormatProvider formatProvider) {
-            BeginValue();
-            writer.Write(value.ToString(formatProvider));
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(UInt32 value, IFormatProvider formatProvider) {
-            BeginValue();
-            writer.Write(value.ToString(formatProvider));
-        }
-        /// <summary>
-        /// Writes the value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(UInt64 value, IFormatProvider formatProvider) {
+        public void WriteValue(Int16 value, IFormatProvider formatProvider)
+        {
             BeginValue();
             writer.Write(value.ToString(formatProvider));
         }
@@ -276,25 +250,96 @@ namespace Liquid.Json {
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(Single value, IFormatProvider formatProvider) {
+        public void WriteValue(Int32 value, IFormatProvider formatProvider)
+        {
             BeginValue();
             writer.Write(value.ToString(formatProvider));
         }
+
         /// <summary>
         /// Writes the value.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(Double value, IFormatProvider formatProvider) {
+        public void WriteValue(Int64 value, IFormatProvider formatProvider)
+        {
             BeginValue();
             writer.Write(value.ToString(formatProvider));
         }
+
         /// <summary>
         /// Writes the value.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="formatProvider">The format provider.</param>
-        public void WriteValue(Decimal value, IFormatProvider formatProvider) {
+        public void WriteValue(Byte value, IFormatProvider formatProvider)
+        {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        public void WriteValue(UInt16 value, IFormatProvider formatProvider)
+        {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        public void WriteValue(UInt32 value, IFormatProvider formatProvider)
+        {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        public void WriteValue(UInt64 value, IFormatProvider formatProvider)
+        {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        public void WriteValue(Single value, IFormatProvider formatProvider)
+        {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        public void WriteValue(Double value, IFormatProvider formatProvider)
+        {
+            BeginValue();
+            writer.Write(value.ToString(formatProvider));
+        }
+
+        /// <summary>
+        /// Writes the value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="formatProvider">The format provider.</param>
+        public void WriteValue(Decimal value, IFormatProvider formatProvider)
+        {
             BeginValue();
             writer.Write(value.ToString(formatProvider));
         }
@@ -303,20 +348,25 @@ namespace Liquid.Json {
         /// Writes the value.
         /// </summary>
         /// <param name="value">if set to <c>true</c> [value].</param>
-        public void WriteValue(Boolean value) {
+        public void WriteValue(Boolean value)
+        {
             BeginValue();
             writer.Write(value ? "true" : "false");
         }
+
         /// <summary>
         /// Writes the null.
         /// </summary>
-        public void WriteNull() {
+        public void WriteNull()
+        {
             BeginValue();
             writer.Write("null");
         }
 
-        private void BeginValue() {
-            if (Depth == 0 && !empty) {
+        private void BeginValue()
+        {
+            if (Depth == 0 &&
+                !empty) {
                 throw new NotSupportedException();
             } else if (InObject) {
                 if (named == null)
@@ -339,11 +389,23 @@ namespace Liquid.Json {
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>This JsonWriter</returns>
-        public JsonWriter WriteName(string name) {
+        public JsonWriter WriteName(string name)
+        {
             if (!InObject)
                 throw new NotSupportedException();
-            this.named = name;
+            named = name;
             return this;
         }
+
+        #region Nested type: NodeType
+
+        private enum NodeType
+        {
+            Array,
+            Object,
+            Constructor
+        }
+
+        #endregion
     }
 }

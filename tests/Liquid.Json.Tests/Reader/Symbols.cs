@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Liquid.Json.Tests.Reader {
+namespace Liquid.Json.Tests.Reader
+{
     [TestClass]
-    public class Symbols {
+    public class Symbols
+    {
         [TestMethod, TestCategory("Reader")]
-        public void ReadsObjectStart() {
+        public void ReadsObjectStart()
+        {
             var sr = new StringReader("{");
             var reader = new JsonReader(sr);
             Assert.IsTrue(reader.ReadNext(), "Failed read");
@@ -18,7 +18,8 @@ namespace Liquid.Json.Tests.Reader {
         }
 
         [TestMethod, TestCategory("Reader")]
-        public void ReadsObjectEnd() {
+        public void ReadsObjectEnd()
+        {
             var sr = new StringReader("}");
             var reader = new JsonReader(sr);
             Assert.IsTrue(reader.ReadNext(), "Failed read");
@@ -27,7 +28,8 @@ namespace Liquid.Json.Tests.Reader {
         }
 
         [TestMethod, TestCategory("Reader")]
-        public void ReadsArrayStart() {
+        public void ReadsArrayStart()
+        {
             var sr = new StringReader("[");
             var reader = new JsonReader(sr);
             Assert.IsTrue(reader.ReadNext(), "Failed read");
@@ -36,7 +38,8 @@ namespace Liquid.Json.Tests.Reader {
         }
 
         [TestMethod, TestCategory("Reader")]
-        public void ReadsArrayEnd() {
+        public void ReadsArrayEnd()
+        {
             var sr = new StringReader("]");
             var reader = new JsonReader(sr);
             Assert.IsTrue(reader.ReadNext(), "Failed read");
@@ -45,7 +48,8 @@ namespace Liquid.Json.Tests.Reader {
         }
 
         [TestMethod, TestCategory("Reader")]
-        public void ReadsComma() {
+        public void ReadsComma()
+        {
             var sr = new StringReader(",");
             var reader = new JsonReader(sr);
             Assert.IsTrue(reader.ReadNext(), "Failed read");
@@ -54,7 +58,8 @@ namespace Liquid.Json.Tests.Reader {
         }
 
         [TestMethod, TestCategory("Reader")]
-        public void ReadsColon() {
+        public void ReadsColon()
+        {
             var sr = new StringReader(":");
             var reader = new JsonReader(sr);
             Assert.IsTrue(reader.ReadNext(), "Failed read");

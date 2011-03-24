@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
 
-namespace Liquid.Json.Tests.Serialization {
+namespace Liquid.Json.Tests.Serialization
+{
     [TestClass]
-    public class Integers {
+    public class Integers
+    {
         public TestContext TestContext { get; set; }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesSByte() {
+        public void SerializesSByte()
+        {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<SByte>(0));
             Assert.AreEqual("1", serializer.Serialize<SByte>(1));
@@ -19,7 +18,8 @@ namespace Liquid.Json.Tests.Serialization {
         }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesInt16() {
+        public void SerializesInt16()
+        {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Int16>(0));
             Assert.AreEqual("1", serializer.Serialize<Int16>(1));
@@ -27,15 +27,17 @@ namespace Liquid.Json.Tests.Serialization {
         }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesInt32() {
+        public void SerializesInt32()
+        {
             var serializer = new JsonSerializer();
-            Assert.AreEqual("0", serializer.Serialize<Int32>(0));
-            Assert.AreEqual("1", serializer.Serialize<Int32>(1));
-            Assert.AreEqual("-1", serializer.Serialize<Int32>(-1));
+            Assert.AreEqual("0", serializer.Serialize(0));
+            Assert.AreEqual("1", serializer.Serialize(1));
+            Assert.AreEqual("-1", serializer.Serialize(-1));
         }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesInt64() {
+        public void SerializesInt64()
+        {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Int64>(0));
             Assert.AreEqual("1", serializer.Serialize<Int64>(1));
@@ -43,35 +45,39 @@ namespace Liquid.Json.Tests.Serialization {
         }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesByte() {
+        public void SerializesByte()
+        {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<Byte>(0));
             Assert.AreEqual("1", serializer.Serialize<Byte>(1));
-            Assert.AreEqual("255", serializer.Serialize<Byte>(Byte.MaxValue));
+            Assert.AreEqual("255", serializer.Serialize(Byte.MaxValue));
         }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesUInt16() {
+        public void SerializesUInt16()
+        {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<UInt16>(0));
             Assert.AreEqual("1", serializer.Serialize<UInt16>(1));
-            Assert.AreEqual("65535", serializer.Serialize<UInt16>(UInt16.MaxValue));
+            Assert.AreEqual("65535", serializer.Serialize(UInt16.MaxValue));
         }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesUInt32() {
+        public void SerializesUInt32()
+        {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<UInt32>(0));
             Assert.AreEqual("1", serializer.Serialize<UInt32>(1));
-            Assert.AreEqual("4294967295", serializer.Serialize<UInt32>(UInt32.MaxValue));
+            Assert.AreEqual("4294967295", serializer.Serialize(UInt32.MaxValue));
         }
 
         [TestMethod, TestCategory("Serialization")]
-        public void SerializesUInt64() {
+        public void SerializesUInt64()
+        {
             var serializer = new JsonSerializer();
             Assert.AreEqual("0", serializer.Serialize<UInt64>(0));
             Assert.AreEqual("1", serializer.Serialize<UInt64>(1));
-            Assert.AreEqual("18446744073709551615", serializer.Serialize<UInt64>(UInt64.MaxValue));
+            Assert.AreEqual("18446744073709551615", serializer.Serialize(UInt64.MaxValue));
         }
     }
 }

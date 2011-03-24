@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Liquid.Json {
+namespace Liquid.Json
+{
     /// <summary>
     /// Creates JSON type serializers
     /// </summary>
-    public interface IJsonTypeSerializerFactory {
+    public interface IJsonTypeSerializerFactory
+    {
         /// <summary>
         /// Creates a serializer for the specified type
         /// </summary>
