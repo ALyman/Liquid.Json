@@ -53,6 +53,8 @@
     <Compile Include="JsonSerializationContext.cs" />
     <Compile Include="JsonSerializationException.cs" />
     <Compile Include="JsonTokenType.cs" />
+    <Compile Include="JsonUnexpectedEndOfStreamException.cs" />
+    <Compile Include="JsonUnexpectedTokenException.cs" />
     <Compile Include="JsonWriter.cs" />
     <Compile Include="MemberUtils.cs" />
     <Compile Include="TypeSerializers\DefaultJsonTypeSerializerFactory.cs" />

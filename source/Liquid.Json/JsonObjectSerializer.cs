@@ -64,7 +64,8 @@ namespace Liquid.Json
                     break;
                 else if (context.Reader.Token != JsonTokenType.String &&
                          context.Reader.Token != JsonTokenType.Identifier)
-                    throw new JsonDeserializationException();
+                    throw new JsonUnexpectedTokenException(context.Reader.Token, context.Reader.Text,
+                                                           JsonTokenType.String, JsonTokenType.Identifier);
                 string name = context.Reader.Text;
                 if (name.StartsWith("\""))
                     name = Json.UnescapeString(name);

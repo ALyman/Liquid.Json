@@ -53,6 +53,7 @@
     <Compile Include="Deserialization\ComplexObjects.cs" />
     <Compile Include="Deserialization\Dictionaries.cs" />
     <Compile Include="Deserialization\Integers.cs" />
+    <Compile Include="Deserialization\Malformed.cs" />
     <Compile Include="Deserialization\Objects.cs" />
     <Compile Include="Deserialization\Reals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

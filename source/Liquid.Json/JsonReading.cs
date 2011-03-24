@@ -19,5 +19,14 @@ namespace Liquid.Json
                 throw new JsonDeserializationException();
             return reader.Text;
         }
+
+        public static Exception UnexpectedTokenException(this JsonReader reader, params JsonTokenType[] expectedTypes)
+        {
+            if (reader.AtEndOfStream) {
+                return new JsonUnexpectedEndOfStreamException(expectedTypes);
+            } else {
+                return new JsonUnexpectedTokenException(reader.Token, reader.Text, expectedTypes);
+            }
+        }
     }
 }

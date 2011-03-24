@@ -48,7 +48,7 @@ namespace Liquid.Json
         /// </summary>
         /// <param name="factories">The factories.</param>
         public JsonSerializer(params IJsonTypeSerializerFactory[] factories)
-            : this((IEnumerable<IJsonTypeSerializerFactory>) factories) {}
+            : this((IEnumerable<IJsonTypeSerializerFactory>)factories) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonSerializer"/> class.
@@ -201,7 +201,7 @@ namespace Liquid.Json
                 result = q.First();
                 serializers.Add(typeof(T), result);
             }
-            return (IJsonTypeSerializer<T>) result;
+            return (IJsonTypeSerializer<T>)result;
         }
 
         /// <summary>

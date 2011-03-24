@@ -13,9 +13,9 @@ namespace Liquid.Json.TypeSerializers
             TypeCode typeCode = Type.GetTypeCode(typeof(T));
             switch (typeCode) {
                 case TypeCode.Boolean:
-                    return (IJsonTypeSerializer<T>) new JsonBooleanSerializer();
+                    return (IJsonTypeSerializer<T>)new JsonBooleanSerializer();
                 case TypeCode.DateTime:
-                    return (IJsonTypeSerializer<T>) new JsonDateSerializer();
+                    return (IJsonTypeSerializer<T>)new JsonDateSerializer();
                 case TypeCode.SByte:
                 case TypeCode.Int16:
                 case TypeCode.Int32:
@@ -37,9 +37,9 @@ namespace Liquid.Json.TypeSerializers
                                    .MakeGenericType(typeof(T))
                                );
                 case TypeCode.Decimal:
-                    return (IJsonTypeSerializer<T>) new JsonDecimalSerializer();
+                    return (IJsonTypeSerializer<T>)new JsonDecimalSerializer();
                 case TypeCode.String:
-                    return (IJsonTypeSerializer<T>) new JsonStringSerializer();
+                    return (IJsonTypeSerializer<T>)new JsonStringSerializer();
                 case TypeCode.Object:
                     if (typeof(T).IsArray) {
                         Type elementType = typeof(T).GetElementType();

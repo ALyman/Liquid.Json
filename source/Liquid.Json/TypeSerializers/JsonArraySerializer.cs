@@ -30,19 +30,20 @@ namespace Liquid.Json.TypeSerializers
 
                 resultList.Add(context.Deserialize<T>());
 
-                context.Reader.ReadNext();
-                if (context.Reader.Token ==
+                if (!context.Reader.ReadNext())
+                    throw context.Reader.UnexpectedTokenException(JsonTokenType.Comma, JsonTokenType.ArrayEnd);
+                else if (context.Reader.Token ==
                     JsonTokenType.ArrayEnd)
                     break;
                 else if (context.Reader.Token ==
                          JsonTokenType.Comma)
                     continue;
                 else
-                    throw new JsonDeserializationException();
+                    throw context.Reader.UnexpectedTokenException(JsonTokenType.Comma, JsonTokenType.ArrayEnd);
             }
             if (context.Reader.Token !=
                 JsonTokenType.ArrayEnd)
-                throw new JsonDeserializationException();
+                throw context.Reader.UnexpectedTokenException(JsonTokenType.ArrayEnd);
 
             return resultList.ToArray();
         }

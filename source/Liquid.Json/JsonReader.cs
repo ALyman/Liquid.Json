@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Liquid.Json
 {
@@ -12,6 +14,7 @@ namespace Liquid.Json
         private readonly StringBuilder buffer = new StringBuilder();
         private readonly TextReader reader;
         private bool undone;
+        private bool readEOF;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonReader"/> class.
@@ -54,6 +57,7 @@ namespace Liquid.Json
             buffer.Length = 0;
             switch (ch) {
                 case '\0':
+                    readEOF = true;
                     return false;
                 case '{':
                     Read();
@@ -103,10 +107,9 @@ namespace Liquid.Json
         public string ReadNextAs(params JsonTokenType[] expectedTypes)
         {
             if (!ReadNext())
-                throw new JsonDeserializationException();
-            if (Array.IndexOf(expectedTypes, Token) ==
-                -1)
-                throw new JsonDeserializationException();
+                throw new JsonDeserializationException(string.Format("Unexpected end of file, expected: {0}", expectedTypes.ToErrorString()));
+            if (Array.IndexOf(expectedTypes, Token) == -1)
+                throw new JsonUnexpectedTokenException(Token, Text, expectedTypes);
             return Text;
         }
 
@@ -147,7 +150,7 @@ namespace Liquid.Json
         {
             Token = JsonTokenType.String;
             char ch = Peek();
-            if (ch != '"') throw new Exception();
+            Debug.Assert(ch == '"');
             Read();
             ch = Peek();
             while (ch != '"') {
@@ -213,7 +216,13 @@ namespace Liquid.Json
             if (ch == -1)
                 return '\0';
             else
-                return (char) ch;
+                return (char)ch;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the reader is at the end of the stream.
+        /// </summary>
+        /// <value><c>true</c> if at the end of the stream; otherwise, <c>false</c>.</value>
+        public bool AtEndOfStream { get { return readEOF & !undone; } }
     }
 }

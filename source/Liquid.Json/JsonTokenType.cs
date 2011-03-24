@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Liquid.Json
 {
@@ -59,5 +61,53 @@ namespace Liquid.Json
         /// ':'
         /// </summary>
         Colon
+    }
+
+    internal static class JsonTokenTypes
+    {
+        public static string ToErrorString(this IEnumerable<JsonTokenType> types)
+        {
+            return string.Join(
+                ", ",
+                types
+                    .OrderBy(e => e)
+                    .Distinct()
+                    .Select(e => e.ToErrorString())
+                    .ToArray()
+                );
+        }
+        public static string ToErrorString(this JsonTokenType type)
+        {
+            switch (type) {
+                case JsonTokenType.ObjectStart:
+                    return "'{'";
+                case JsonTokenType.ObjectEnd:
+                    return "'}'";
+                case JsonTokenType.ArrayStart:
+                    return "'['";
+                case JsonTokenType.ArrayEnd:
+                    return "']'";
+                case JsonTokenType.Integer:
+                    return "integer";
+                case JsonTokenType.Real:
+                    return "real";
+                case JsonTokenType.String:
+                    return "string";
+                case JsonTokenType.Identifier:
+                    return "identifier";
+                case JsonTokenType.True:
+                    return "'true'";
+                case JsonTokenType.False:
+                    return "'false'";
+                case JsonTokenType.New:
+                    return "'new'";
+                case JsonTokenType.Comma:
+                    return "','";
+                case JsonTokenType.Colon:
+                    return "':'";
+                default:
+                    return type.ToString();
+            }
+        }
     }
 }
