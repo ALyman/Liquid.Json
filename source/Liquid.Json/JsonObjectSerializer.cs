@@ -80,7 +80,15 @@ namespace Liquid.Json
                         if (canidates.Any(m => m.Name == name))
                             selectedMember = canidates.First(m => m.Name == name);
                         else
-                            throw new JsonDeserializationException();
+                            throw new JsonDeserializationException(
+                                string.Format(
+                                    "Multiple candidate members for '{0}' could not be resolved by case sensitivity; candidates were: {1}",
+                                    name,
+                                    string.Join(", ",
+                                                canidates.Select(m => string.Format("'{0}'", m.Name))
+                                        )
+                                    )
+                                );
                         break;
                 }
                 context.Reader.ReadNextAs(JsonTokenType.Colon);

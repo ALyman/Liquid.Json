@@ -17,7 +17,6 @@ namespace Liquid.Json.Tests.Reader
             Assert.IsTrue(reader.ReadNext(), "Failed read");
             Assert.AreEqual(JsonTokenType.String, reader.Token);
             Assert.AreEqual("\"hello, world\"", reader.Text);
-            var serializer = new JsonSerializer();
         }
 
         [TestMethod, TestCategory("Reader")]
@@ -28,7 +27,6 @@ namespace Liquid.Json.Tests.Reader
             Assert.IsTrue(reader.ReadNext(), "Failed read");
             Assert.AreEqual(JsonTokenType.String, reader.Token);
             Assert.AreEqual("\"this is escaped: \\\"\"", reader.Text);
-            var serializer = new JsonSerializer();
         }
     }
 }

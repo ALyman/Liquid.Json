@@ -98,7 +98,7 @@ namespace Liquid.Json
                 writer.Write('}');
             } else if (InConstructor) {
                 writer.Write(')');
-            } else throw new NotSupportedException();
+            } else throw new NotSupportedException("Need to be inside an Array, Object or Constructor to End");
             itemStarted = true;
             state.Pop();
         }
@@ -367,10 +367,10 @@ namespace Liquid.Json
         {
             if (Depth == 0 &&
                 !empty) {
-                throw new NotSupportedException();
+                throw new NotSupportedException("Can not have two values at the root");
             } else if (InObject) {
                 if (named == null)
-                    throw new Exception();
+                    throw new NotSupportedException("Object properties must have a name written first");
                 if (itemStarted)
                     writer.Write(", ");
                 writer.Write(Json.EscapeString(named));
@@ -392,7 +392,7 @@ namespace Liquid.Json
         public JsonWriter WriteName(string name)
         {
             if (!InObject)
-                throw new NotSupportedException();
+                throw new NotSupportedException("Must be inside an object to write a name");
             named = name;
             return this;
         }

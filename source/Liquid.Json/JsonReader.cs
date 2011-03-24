@@ -91,7 +91,7 @@ namespace Liquid.Json
                         ReadIdentifier();
                         return true;
                     }
-                    throw new NotImplementedException();
+                    throw new FormatException(string.Format("Invalid character: {0}", ch));
             }
         }
 
@@ -116,7 +116,7 @@ namespace Liquid.Json
         public void UndoRead()
         {
             if (undone)
-                throw new NotSupportedException();
+                throw new NotSupportedException("Can only UndoRead one token at a time");
             undone = true;
         }
 

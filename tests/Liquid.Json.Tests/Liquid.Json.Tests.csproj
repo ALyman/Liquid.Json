@@ -50,11 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Deserialization\Arrays.cs" />
+    <Compile Include="Deserialization\ComplexObjects.cs" />
     <Compile Include="Deserialization\Dictionaries.cs" />
     <Compile Include="Deserialization\Integers.cs" />
     <Compile Include="Deserialization\Objects.cs" />
     <Compile Include="Deserialization\Reals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reader\LookAhead.cs" />
+    <Compile Include="Reader\Malformed.cs" />
     <Compile Include="Reader\Strings.cs" />
     <Compile Include="Reader\Symbols.cs" />
     <Compile Include="Reader\Integers.cs" />
@@ -73,7 +76,10 @@
     <Compile Include="TestClasses.cs" />
     <Compile Include="Writer\Arrays.cs" />
     <Compile Include="Writer\Constructors.cs" />
+    <Compile Include="Writer\Malformed.cs" />
     <Compile Include="Writer\Objects.cs" />
+    <Compile Include="Writer\Primitives.cs" />
+    <Compile Include="Writer\Reals.cs" />
     <Compile Include="Writer\Strings.cs" />
     <Compile Include="Writer\Integers.cs" />
   </ItemGroup>

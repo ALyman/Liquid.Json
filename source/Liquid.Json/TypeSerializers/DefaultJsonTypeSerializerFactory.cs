@@ -41,6 +41,12 @@ namespace Liquid.Json.TypeSerializers
                 case TypeCode.String:
                     return (IJsonTypeSerializer<T>) new JsonStringSerializer();
                 case TypeCode.Object:
+                    if (typeof(T).IsArray) {
+                        Type elementType = typeof(T).GetElementType();
+                        return
+                            (IJsonTypeSerializer<T>)
+                            Activator.CreateInstance(typeof(JsonArraySerializer<>).MakeGenericType(elementType));
+                    }
                     return TryMatch<T>(typeof(IDictionary<,>), typeof(JsonIDictionarySerializer<,,>))
                            ?? TryMatch<T>(typeof(IList<>), typeof(JsonIListSerializer<,>))
                            ?? TryMatch<T>(typeof(IEnumerable<>), typeof(JsonIEnumerableSerializer<,>))

@@ -27,7 +27,9 @@ namespace Liquid.Json.Tests.Serialization
         public interface X
         {
             int A { get; set; }
+
             int B { get; set; }
+
             int C { get; set; }
         }
 

@@ -3,7 +3,7 @@
 namespace Liquid.Json
 {
     /// <summary>
-    /// An exception thrown by the JSON deserialization process when an error occurs 
+    /// An exception thrown by the JSON deserialization process when an error occurs
     /// </summary>
     public class JsonDeserializationException : Exception
     {
