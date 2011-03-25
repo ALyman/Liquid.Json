@@ -20,7 +20,7 @@ namespace Liquid.Json.Tests.Deserialization
         public void DeserializesOneItemDictionary()
         {
             var serializer = new JsonSerializer();
-            var result = serializer.Deserialize<IDictionary<string, int>>("{\"A\": 1}");
+            var result = serializer.Deserialize<SortedDictionary<string, int>>("{\"A\": 1}");
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
             Assert.IsTrue(result.ContainsKey("A"));

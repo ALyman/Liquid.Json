@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Diagnostics;
 
-namespace Liquid.Json
+namespace Liquid.Json.TypeSerializers
 {
     /// <summary>
     /// Serializes an object of the specified type
     /// </summary>
-    /// <typeparam name="T">The tye of object being serialized.</typeparam>
+    /// <typeparam name="T">The type of object being serialized.</typeparam>
     public class JsonObjectSerializer<T> : IJsonTypeInplaceSerializer<T>
     {
         private const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public;
@@ -64,8 +65,7 @@ namespace Liquid.Json
                     break;
                 else if (context.Reader.Token != JsonTokenType.String &&
                          context.Reader.Token != JsonTokenType.Identifier)
-                    throw new JsonUnexpectedTokenException(context.Reader.Token, context.Reader.Text,
-                                                           JsonTokenType.String, JsonTokenType.Identifier);
+                    throw context.Reader.UnexpectedTokenException(JsonTokenType.String, JsonTokenType.Identifier);
                 string name = context.Reader.Text;
                 if (name.StartsWith("\""))
                     name = Json.UnescapeString(name);
@@ -73,7 +73,7 @@ namespace Liquid.Json
                 IEnumerable<MemberInfo> canidates = members[name.ToLower()];
                 switch (canidates.Count()) {
                     case 0:
-                        throw new JsonDeserializationException();
+                        throw new JsonDeserializationException(string.Format("Property '{0}' not found on type {1}", name, typeof(T)));
                     case 1:
                         selectedMember = canidates.Single();
                         break;
@@ -102,11 +102,9 @@ namespace Liquid.Json
                          JsonTokenType.Comma)
                     continue;
                 else
-                    throw new JsonDeserializationException();
+                    throw context.Reader.UnexpectedTokenException(JsonTokenType.Comma, JsonTokenType.ObjectEnd);
             }
-            if (context.Reader.Token !=
-                JsonTokenType.ObjectEnd)
-                throw new JsonDeserializationException();
+            Debug.Assert(context.Reader.Token == JsonTokenType.ObjectEnd);
         }
 
         #endregion

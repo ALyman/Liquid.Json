@@ -28,7 +28,7 @@ namespace Liquid.Json
         /// <param name="text">The text.</param>
         /// <param name="expectedTypes">The expected types.</param>
         public JsonUnexpectedTokenException(JsonTokenType token, string text, IEnumerable<JsonTokenType> expectedTypes)
-            : base(string.Format("Unexpected token '{0}', expected: {1}", text, expectedTypes.ToErrorString()))
+            : base(string.Format("Unexpected token '{0}'{1}", text, expectedTypes.ToErrorString()))
         {
             this.Data.Add("Token", token);
             this.Data.Add("Text", text);

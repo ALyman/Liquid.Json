@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Liquid.Json.Tests
 {
-    internal class EmptyObject_Class {}
+    internal class EmptyObject_Class { }
 
     internal class ObjectWithProperties_Class : IEquatable<ObjectWithProperties_Class>,
                                                 IComparable<ObjectWithProperties_Class>
@@ -76,6 +77,11 @@ namespace Liquid.Json.Tests
         public int C;
     }
 
+    internal class ObjectWithNullable_Class
+    {
+        public int? A = null;
+    }
+
     internal class ObjectWithProperties_And_Fields_Class
     {
         public int C;
@@ -109,6 +115,27 @@ namespace Liquid.Json.Tests
         #region IEquatable<ObjectWithArrays_Class> Members
 
         public bool Equals(ObjectWithArrays_Class other)
+        {
+            return A.SequenceEqual(other.A)
+                   && B.SequenceEqual(other.B);
+        }
+
+        #endregion
+    }
+
+    internal class ObjectWithLists_Class : IEquatable<ObjectWithLists_Class>
+    {
+        public ObjectWithLists_Class()
+        {
+            this.A = new List<int>();
+            this.B = new List<int>();
+        }
+        public List<int> A { get; private set; }
+        public List<int> B { get; private set; }
+
+        #region IEquatable<ObjectWithLists_Class> Members
+
+        public bool Equals(ObjectWithLists_Class other)
         {
             return A.SequenceEqual(other.A)
                    && B.SequenceEqual(other.B);

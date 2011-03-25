@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace Liquid.Json.TypeSerializers
@@ -21,8 +22,7 @@ namespace Liquid.Json.TypeSerializers
                 context.FormatProvider,
                 out result
                 );
-            if (!success)
-                throw new JsonDeserializationException();
+            Debug.Assert(success);
             return result;
         }
 

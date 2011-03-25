@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Liquid.Json.TypeSerializers
 {
@@ -22,7 +23,7 @@ namespace Liquid.Json.TypeSerializers
         {
             if (typeof(T) ==
                 typeof(IDictionary<K, V>)) {
-                var result = (T) (IDictionary<K, V>) new Dictionary<K, V>();
+                var result = (T)(IDictionary<K, V>)new Dictionary<K, V>();
                 DeserializeInto(ref result, context);
                 return result;
             } else {
@@ -37,31 +38,25 @@ namespace Liquid.Json.TypeSerializers
             context.Reader.ReadNextAs(JsonTokenType.ObjectStart);
             while (true) {
                 context.Reader.ReadNext();
-                if (context.Reader.Token ==
-                    JsonTokenType.ObjectEnd)
+                if (context.Reader.Token == JsonTokenType.ObjectEnd)
                     break;
-                else if (context.Reader.Token != JsonTokenType.String &&
-                         context.Reader.Token != JsonTokenType.Identifier)
-                    throw new JsonDeserializationException();
+                else if (context.Reader.Token != JsonTokenType.String && context.Reader.Token != JsonTokenType.Identifier)
+                    throw context.Reader.UnexpectedTokenException(JsonTokenType.String, JsonTokenType.Identifier);
                 string name = context.Reader.Text;
                 if (name.StartsWith("\""))
                     name = Json.UnescapeString(name);
                 context.Reader.ReadNextAs(JsonTokenType.Colon);
                 var value = context.Deserialize<V>();
-                @object.Add((K) (object) name, value);
+                @object.Add((K)(object)name, value);
                 context.Reader.ReadNext();
-                if (context.Reader.Token ==
-                    JsonTokenType.ObjectEnd)
+                if (context.Reader.Token == JsonTokenType.ObjectEnd)
                     break;
-                else if (context.Reader.Token ==
-                         JsonTokenType.Comma)
+                else if (context.Reader.Token == JsonTokenType.Comma)
                     continue;
                 else
-                    throw new JsonDeserializationException();
+                    throw context.Reader.UnexpectedTokenException(JsonTokenType.Comma, JsonTokenType.ObjectEnd);
             }
-            if (context.Reader.Token !=
-                JsonTokenType.ObjectEnd)
-                throw new JsonDeserializationException();
+            Debug.Assert(context.Reader.Token == JsonTokenType.ObjectEnd);
         }
 
         #endregion

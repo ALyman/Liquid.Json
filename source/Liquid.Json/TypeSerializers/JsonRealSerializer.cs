@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace Liquid.Json.TypeSerializers
@@ -10,7 +11,7 @@ namespace Liquid.Json.TypeSerializers
 
         static JsonRealSerializer()
         {
-            TryParse = (TryParseDelegate) Delegate.CreateDelegate(typeof(TryParseDelegate), typeof(T), "TryParse");
+            TryParse = (TryParseDelegate)Delegate.CreateDelegate(typeof(TryParseDelegate), typeof(T), "TryParse");
         }
 
         #region IJsonTypeSerializer<T> Members
@@ -19,10 +20,10 @@ namespace Liquid.Json.TypeSerializers
         {
             if (typeof(T) ==
                 typeof(Single))
-                context.Writer.WriteValue((Single) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((Single)(object)@object, context.FormatProvider);
             else if (typeof(T) ==
                      typeof(Double))
-                context.Writer.WriteValue((Double) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((Double)(object)@object, context.FormatProvider);
             else throw new NotSupportedException();
         }
 
@@ -35,8 +36,7 @@ namespace Liquid.Json.TypeSerializers
                 context.FormatProvider,
                 out result
                 );
-            if (!success)
-                throw new JsonDeserializationException();
+            Debug.Assert(success);
             return result;
         }
 

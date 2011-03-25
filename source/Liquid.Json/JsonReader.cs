@@ -107,9 +107,9 @@ namespace Liquid.Json
         public string ReadNextAs(params JsonTokenType[] expectedTypes)
         {
             if (!ReadNext())
-                throw new JsonDeserializationException(string.Format("Unexpected end of file, expected: {0}", expectedTypes.ToErrorString()));
+                throw this.UnexpectedTokenException(expectedTypes);
             if (Array.IndexOf(expectedTypes, Token) == -1)
-                throw new JsonUnexpectedTokenException(Token, Text, expectedTypes);
+                throw this.UnexpectedTokenException(expectedTypes);
             return Text;
         }
 

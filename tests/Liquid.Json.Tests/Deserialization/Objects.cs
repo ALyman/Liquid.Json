@@ -24,5 +24,16 @@ namespace Liquid.Json.Tests.Deserialization
             Assert.AreEqual(2, result.B);
             Assert.AreEqual(3, result.C);
         }
+
+        [TestMethod, TestCategory("Deserialization")]
+        public void ObjectWithInvalidProperty()
+        {
+            var serializer = new JsonSerializer();
+            try {
+                var result = serializer.Deserialize<ObjectWithProperties_Class>("{\"X\": 1}");
+            } catch (JsonDeserializationException ex) {
+                Assert.AreEqual("Property 'X' not found on type Liquid.Json.Tests.ObjectWithProperties_Class", ex.Message);
+            }
+        }
     }
 }

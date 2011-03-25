@@ -118,11 +118,11 @@ namespace Liquid.Json
 
         internal void Serialize<T>(T @object, JsonSerializationContext context)
         {
-            if (@object == null) {
+            IJsonTypeSerializer<T> s = GetSerializer<T>();
+            if (@object == null && !(s is IWantNullValues)) {
                 context.Writer.WriteNull();
             } else {
                 context.BeforeSerializing(@object);
-                IJsonTypeSerializer<T> s = GetSerializer<T>();
                 s.Serialize(@object, context);
                 context.AfterSerializing(@object);
             }
@@ -261,9 +261,22 @@ namespace Liquid.Json
 
         internal object DeserializeAs(Type type, JsonDeserializationContext context)
         {
-            MethodInfo m = DeserializeContextMethod
-                .MakeGenericMethod(type);
-            return m.Invoke(this, new object[] { context });
+            MethodInfo m = DeserializeContextMethod.MakeGenericMethod(type);
+            if (type.IsValueType) {
+                try {
+                    return m.Invoke(this, new[] { context });
+#if DEBUG
+                } catch (TargetInvocationException ex) {
+                    throw ex.InnerException;
+#endif
+                } finally { }
+            } else {
+                var d = (Func<JsonDeserializationContext, object>)Delegate.CreateDelegate(
+                    typeof(Func<JsonDeserializationContext, object>),
+                    this,
+                    m);
+                return d(context);
+            }
         }
 
         /// <summary>

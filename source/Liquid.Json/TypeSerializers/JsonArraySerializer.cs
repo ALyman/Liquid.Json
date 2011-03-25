@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Liquid.Json.TypeSerializers
 {
@@ -41,9 +42,7 @@ namespace Liquid.Json.TypeSerializers
                 else
                     throw context.Reader.UnexpectedTokenException(JsonTokenType.Comma, JsonTokenType.ArrayEnd);
             }
-            if (context.Reader.Token !=
-                JsonTokenType.ArrayEnd)
-                throw context.Reader.UnexpectedTokenException(JsonTokenType.ArrayEnd);
+            Debug.Assert(context.Reader.Token == JsonTokenType.ArrayEnd);
 
             return resultList.ToArray();
         }

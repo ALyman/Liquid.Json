@@ -10,6 +10,11 @@ namespace Liquid.Json
     public enum JsonTokenType
     {
         /// <summary>
+        /// Any token type
+        /// </summary>
+        Any = -1,
+
+        /// <summary>
         /// '{'
         /// </summary>
         ObjectStart,
@@ -60,14 +65,17 @@ namespace Liquid.Json
         /// <summary>
         /// ':'
         /// </summary>
-        Colon
+        Colon,
     }
 
     internal static class JsonTokenTypes
     {
         public static string ToErrorString(this IEnumerable<JsonTokenType> types)
         {
-            return string.Join(
+            if (types.Contains(JsonTokenType.Any))
+                return string.Empty;
+
+            return ", expected: " + string.Join(
                 ", ",
                 types
                     .OrderBy(e => e)

@@ -55,6 +55,7 @@
     <Compile Include="Deserialization\Integers.cs" />
     <Compile Include="Deserialization\Malformed.cs" />
     <Compile Include="Deserialization\Objects.cs" />
+    <Compile Include="Deserialization\Other.cs" />
     <Compile Include="Deserialization\Reals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reader\LookAhead.cs" />
@@ -69,12 +70,14 @@
     <Compile Include="Serialization\Dictionaries.cs" />
     <Compile Include="Serialization\Extensibility.cs" />
     <Compile Include="Serialization\Integers.cs" />
+    <Compile Include="Serialization\Malformed.cs" />
     <Compile Include="Serialization\ObjectExtensibility.cs" />
     <Compile Include="Serialization\Objects.cs" />
     <Compile Include="Serialization\Other.cs" />
     <Compile Include="Serialization\Reals.cs" />
     <Compile Include="Serialization\Strings.cs" />
     <Compile Include="TestClasses.cs" />
+    <Compile Include="TypeSerializerFactory\Factory.cs" />
     <Compile Include="Writer\Arrays.cs" />
     <Compile Include="Writer\Constructors.cs" />
     <Compile Include="Writer\Malformed.cs" />

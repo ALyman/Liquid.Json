@@ -24,7 +24,7 @@ namespace Liquid.Json
         /// </summary>
         /// <param name="expectedTypes">The expected types.</param>
         public JsonUnexpectedEndOfStreamException(IEnumerable<JsonTokenType> expectedTypes)
-            : base(string.Format("Unexpected end of file, expected: {0}", expectedTypes.ToErrorString()))
+            : base(string.Format("Unexpected end of file{0}", expectedTypes.ToErrorString()))
         {
             this.Data.Add("ExpectedTypes", expectedTypes.ToArray());
         }

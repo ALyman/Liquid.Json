@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace Liquid.Json.TypeSerializers
 {
@@ -10,7 +11,7 @@ namespace Liquid.Json.TypeSerializers
 
         static JsonIntegerSerializer()
         {
-            TryParse = (TryParseDelegate) Delegate.CreateDelegate(typeof(TryParseDelegate), typeof(T), "TryParse");
+            TryParse = (TryParseDelegate)Delegate.CreateDelegate(typeof(TryParseDelegate), typeof(T), "TryParse");
         }
 
         #region IJsonTypeSerializer<T> Members
@@ -19,28 +20,28 @@ namespace Liquid.Json.TypeSerializers
         {
             if (typeof(T) ==
                 typeof(SByte))
-                context.Writer.WriteValue((SByte) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((SByte)(object)@object, context.FormatProvider);
             else if (typeof(T) ==
                      typeof(Int16))
-                context.Writer.WriteValue((Int16) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((Int16)(object)@object, context.FormatProvider);
             else if (typeof(T) ==
                      typeof(Int32))
-                context.Writer.WriteValue((Int32) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((Int32)(object)@object, context.FormatProvider);
             else if (typeof(T) ==
                      typeof(Int64))
-                context.Writer.WriteValue((Int64) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((Int64)(object)@object, context.FormatProvider);
             else if (typeof(T) ==
                      typeof(Byte))
-                context.Writer.WriteValue((Byte) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((Byte)(object)@object, context.FormatProvider);
             else if (typeof(T) ==
                      typeof(UInt16))
-                context.Writer.WriteValue((UInt16) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((UInt16)(object)@object, context.FormatProvider);
             else if (typeof(T) ==
                      typeof(UInt32))
-                context.Writer.WriteValue((UInt32) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((UInt32)(object)@object, context.FormatProvider);
             else if (typeof(T) ==
                      typeof(UInt64))
-                context.Writer.WriteValue((UInt64) (object) @object, context.FormatProvider);
+                context.Writer.WriteValue((UInt64)(object)@object, context.FormatProvider);
             else throw new NotSupportedException();
         }
 
@@ -53,8 +54,7 @@ namespace Liquid.Json.TypeSerializers
                 context.FormatProvider,
                 out result
                 );
-            if (!success)
-                throw new JsonDeserializationException();
+            Debug.Assert(success);
             return result;
         }
 

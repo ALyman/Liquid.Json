@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Liquid.Json.TypeSerializers
 {
@@ -15,13 +16,11 @@ namespace Liquid.Json.TypeSerializers
         public Boolean Deserialize(JsonDeserializationContext context)
         {
             string str = context.Reader.ReadNextAs(JsonTokenType.True, JsonTokenType.False).ToLower();
-            switch (str) {
-                case "true":
-                    return true;
-                case "false":
-                    return false;
-                default:
-                    throw new JsonDeserializationException();
+            if (str == "true") {
+                return true;
+            } else {
+                Debug.Assert(str == "false");
+                return false;
             }
         }
 

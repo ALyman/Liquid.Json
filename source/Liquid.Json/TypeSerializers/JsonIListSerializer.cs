@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Liquid.Json.TypeSerializers
 {
@@ -21,7 +22,7 @@ namespace Liquid.Json.TypeSerializers
         {
             if (typeof(T) ==
                 typeof(IList<S>)) {
-                var result = (T) (IList<S>) new List<S>();
+                var result = (T)(IList<S>)new List<S>();
                 DeserializeInto(ref result, context);
                 return result;
             } else {
@@ -51,11 +52,9 @@ namespace Liquid.Json.TypeSerializers
                          JsonTokenType.Comma)
                     continue;
                 else
-                    throw new JsonDeserializationException();
+                    throw context.Reader.UnexpectedTokenException(JsonTokenType.Comma, JsonTokenType.ArrayEnd);
             }
-            if (context.Reader.Token !=
-                JsonTokenType.ArrayEnd)
-                throw new JsonDeserializationException();
+            Debug.Assert(context.Reader.Token == JsonTokenType.ArrayEnd);
         }
 
         #endregion

@@ -54,7 +54,7 @@ namespace Liquid.Json.TypeSerializers
                            ?? new JsonObjectSerializer<T>()
                         ;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotSupportedException(string.Format("Invalid Type: {0}", typeof(T).FullName));
             }
         }
 
