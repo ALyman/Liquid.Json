@@ -57,9 +57,9 @@ namespace Liquid.Json
         /// </summary>
         /// <typeparam name="T">The type of the value to be deserialized in-place</typeparam>
         /// <param name="value">The value to be deserailzed.</param>
-        public void DeserializeInplace<T>(T value)
+        public void DeserializeInplace<T>(ref T value)
         {
-            throw new NotImplementedException();
+            serailizer.DeserializeInplace(ref value, this);
         }
 
         /// <summary>
@@ -67,9 +67,9 @@ namespace Liquid.Json
         /// </summary>
         /// <param name="value">The value to be deserialized.</param>
         /// <param name="memberType">The type of the value to be deserialized in-place</param>
-        public void DeserializeInplace(object value, Type memberType)
+        public void DeserializeInplace(ref object value, Type memberType)
         {
-            throw new NotImplementedException();
+            serailizer.DeserializeInplace(ref value, memberType, this);
         }
 
         /// <summary>

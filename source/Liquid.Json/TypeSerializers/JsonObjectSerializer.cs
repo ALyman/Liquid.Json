@@ -198,7 +198,8 @@ namespace Liquid.Json.TypeSerializers
             Type memberType = member.GetMemberType();
             if (member.IsReadOnly()) {
                 object value = member.GetMemberValue(@object);
-                context.DeserializeInplace(value, memberType);
+                context.DeserializeInplace(ref value, memberType);
+                member.SetMemberValue(@object, value);
             } else {
                 member.SetMemberValue(
                     @object,

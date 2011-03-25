@@ -16,6 +16,8 @@ namespace Liquid.Json
         private static readonly MethodInfo SerializeMethod;
         private static readonly MethodInfo SerializeContextMethod;
         private static readonly MethodInfo DeserializeContextMethod;
+        private static readonly MethodInfo DeserializeInplaceContextMethod;
+        private static readonly MethodInfo CanDeserializeInplaceContextMethod;
 
         private readonly List<IJsonTypeSerializerFactory> factories;
 
@@ -24,22 +26,34 @@ namespace Liquid.Json
         static JsonSerializer()
         {
             SerializeMethod =
-                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                  where m.Name == "Serialize"
                  let p = m.GetParameters()
                  where p.Length == 2 && p[1].ParameterType == typeof(TextWriter)
                  select m).Single();
             SerializeContextMethod =
-                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
+                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.NonPublic | BindingFlags.NonPublic | BindingFlags.Instance)
                  where m.Name == "Serialize"
                  let p = m.GetParameters()
                  where p.Length == 2 && p[1].ParameterType == typeof(JsonSerializationContext)
                  select m).Single();
             DeserializeContextMethod =
-                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
+                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.NonPublic | BindingFlags.NonPublic | BindingFlags.Instance)
                  where m.Name == "Deserialize"
                  let p = m.GetParameters()
                  where p.Length == 1 && p[0].ParameterType == typeof(JsonDeserializationContext)
+                 select m).Single();
+            DeserializeInplaceContextMethod =
+                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.NonPublic | BindingFlags.NonPublic | BindingFlags.Instance)
+                 where m.Name == "DeserializeInplace"
+                 let p = m.GetParameters()
+                 where p.Length == 2 && p[1].ParameterType == typeof(JsonDeserializationContext)
+                 select m).Single();
+            CanDeserializeInplaceContextMethod =
+                (from m in typeof(JsonSerializer).GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                 where m.Name == "CanDeserializeInplace"
+                 let p = m.GetParameters()
+                 where p.Length == 0
                  select m).Single();
         }
 
@@ -164,7 +178,15 @@ namespace Liquid.Json
         {
             MethodInfo m = SerializeMethod
                 .MakeGenericMethod(type);
-            m.Invoke(this, new[] { @object, writer });
+            // TODO: Remove the MethodInfo.Invoke
+            try {
+                // TODO: Replace this MethodInfo.Invoke with an expression tree
+                m.Invoke(this, new[] { @object, writer });
+#if DEBUG
+            } catch (TargetInvocationException ex) {
+                throw ex.InnerException;
+#endif
+            } finally { }
         }
 
         internal void SerializeAs(Type type, object @object, JsonSerializationContext context)
@@ -262,21 +284,14 @@ namespace Liquid.Json
         internal object DeserializeAs(Type type, JsonDeserializationContext context)
         {
             MethodInfo m = DeserializeContextMethod.MakeGenericMethod(type);
-            if (type.IsValueType) {
-                try {
-                    return m.Invoke(this, new[] { context });
+            try {
+                // TODO: Replace this MethodInfo.Invoke with an expression tree
+                return m.Invoke(this, new[] { context });
 #if DEBUG
-                } catch (TargetInvocationException ex) {
-                    throw ex.InnerException;
+            } catch (TargetInvocationException ex) {
+                throw ex.InnerException;
 #endif
-                } finally { }
-            } else {
-                var d = (Func<JsonDeserializationContext, object>)Delegate.CreateDelegate(
-                    typeof(Func<JsonDeserializationContext, object>),
-                    this,
-                    m);
-                return d(context);
-            }
+            } finally { }
         }
 
         /// <summary>
@@ -288,13 +303,18 @@ namespace Liquid.Json
         /// </returns>
         public bool CanDeserializeInplace<T>() where T : class
         {
-            IJsonTypeSerializer<T> s = GetSerializer<T>();
+            var s = GetSerializer<T>();
             return s is IJsonTypeInplaceSerializer<T>;
         }
 
         internal bool CanDeserializeInplace(Type type)
         {
-            throw new NotImplementedException();
+            var m = CanDeserializeInplaceContextMethod.MakeGenericMethod(type);
+            var d = (Func<bool>)Delegate.CreateDelegate(
+                typeof(Func<bool>),
+                this,
+                m);
+            return d();
         }
 
         #region Nested type: SerializeDelegate
@@ -302,5 +322,32 @@ namespace Liquid.Json
         private delegate void SerializeDelegate(object @object, JsonSerializationContext context);
 
         #endregion
+
+        internal void DeserializeInplace<T>(ref T value, JsonDeserializationContext context)
+        {
+            if (value == null)
+                throw new ArgumentNullException("@object");
+
+            var s = GetSerializer<T>() as IJsonTypeInplaceSerializer<T>;
+            s.DeserializeInto(ref value, context);
+        }
+
+        internal void DeserializeInplace(ref object value, Type type, JsonDeserializationContext context)
+        {
+            if (value == null)
+                throw new ArgumentNullException("@object");
+
+            var m = DeserializeInplaceContextMethod.MakeGenericMethod(type);
+            try {
+                // TODO: Replace this MethodInfo.Invoke with an expression tree
+                var args = new[] { value, context };
+                m.Invoke(this, args);
+                value = args[0];
+#if DEBUG
+            } catch (TargetInvocationException ex) {
+                throw ex.InnerException;
+#endif
+            } finally { }
+        }
     }
 }

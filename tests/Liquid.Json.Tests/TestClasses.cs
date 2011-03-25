@@ -82,6 +82,11 @@ namespace Liquid.Json.Tests
         public int? A = null;
     }
 
+    internal class ObjectWithReadOnlyChild_Class
+    {
+        public readonly ObjectWithFields_Class A = new ObjectWithFields_Class();
+    }
+
     internal class ObjectWithProperties_And_Fields_Class
     {
         public int C;

@@ -35,5 +35,16 @@ namespace Liquid.Json.Tests.Deserialization
                 Assert.AreEqual("Property 'X' not found on type Liquid.Json.Tests.ObjectWithProperties_Class", ex.Message);
             }
         }
+
+        [TestMethod, TestCategory("Deserialization")]
+        public void ObjectWithReadOnlyChild()
+        {
+            var serializer = new JsonSerializer();
+            var result = serializer.Deserialize<ObjectWithReadOnlyChild_Class>("{A: {\"A\": 1, \"B\": 2, \"C\": 3}}");
+            Assert.IsInstanceOfType(result, typeof(ObjectWithReadOnlyChild_Class));
+            Assert.AreEqual(1, result.A.A);
+            Assert.AreEqual(2, result.A.B);
+            Assert.AreEqual(3, result.A.C);
+        }
     }
 }
