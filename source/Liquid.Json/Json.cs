@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 
 namespace Liquid.Json
@@ -50,14 +51,14 @@ namespace Liquid.Json
                     case '\t':
                         result.Append("\\t");
                         break;
-                        // TODO: Implement unicode characters in Json.EscapeString(string)
-                        //case 'u':
-                        //case 'U': throw new NotImplementedException();
+                    // TODO: Implement unicode characters in Json.EscapeString(string)
+                    //case 'u':
+                    //case 'U': throw new NotImplementedException();
                     default:
                         if (ch > 255) {
-                            result.AppendFormat("\\u{0:x4}", (short) ch);
+                            result.AppendFormat("\\u{0:x4}", (short)ch);
                         } else if (char.IsControl(ch)) {
-                            result.AppendFormat("\\x{0:x2}", (byte) ch);
+                            result.AppendFormat("\\x{0:x2}", (byte)ch);
                         } else {
                             result.Append(ch);
                         }
@@ -96,9 +97,18 @@ namespace Liquid.Json
                             case 't':
                                 result.Append('\t');
                                 break;
+                            case 'x':
+                            case 'X':
+                                var hex2 = str.Substring(i + 1, 2);
+                                result.Append((char)Int32.Parse(hex2, NumberStyles.HexNumber));
+                                i += 2;
+                                break;
                             case 'u':
                             case 'U':
-                                throw new NotImplementedException();
+                                var hex4 = str.Substring(i + 1, 4);
+                                result.Append((char)Int32.Parse(hex4, NumberStyles.HexNumber));
+                                i += 4;
+                                break;
                             default:
                                 result.Append(str[i]);
                                 break;
