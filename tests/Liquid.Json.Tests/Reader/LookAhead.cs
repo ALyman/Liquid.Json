@@ -50,10 +50,10 @@ namespace Liquid.Json.Tests.Reader
             Assert.IsTrue(reader.ReadNext(), "Failed read");
 
             try {
-                var text = reader.ReadNextAs(JsonTokenType.True);
+                var text = reader.ReadNextAs(JsonTokenType.True, JsonTokenType.False, JsonTokenType.New, JsonTokenType.Colon, JsonTokenType.ArrayStart, (JsonTokenType)(-2));
                 Assert.Fail("ReadNextAs found text: {0} past the end of the token stream", text);
             } catch (JsonDeserializationException ex) {
-                Assert.AreEqual("Unexpected end of file, expected: 'true'", ex.Message);
+                Assert.AreEqual("Unexpected end of file, expected: -2, '[', 'true', 'false', 'new', ':'", ex.Message);
             }
         }
 

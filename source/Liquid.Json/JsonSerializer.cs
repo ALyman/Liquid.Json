@@ -295,11 +295,60 @@ namespace Liquid.Json
         }
 
         /// <summary>
-        /// Determines whether this instance can deserialize the specfied type in-place.
+        /// Deserializes the specified string.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize</typeparam>
+        /// <param name="target">The target.</param>
+        /// <param name="str">The string.</param>
+        public void DeserializeInto<T>(ref T target, string str)
+        {
+            var reader = new StringReader(str);
+            DeserializeInto<T>(ref target, reader);
+        }
+
+        /// <summary>
+        /// Deserializes the specified stream.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize</typeparam>
+        /// <param name="target">The target.</param>
+        /// <param name="stream">The stream.</param>
+        public void DeserializeInto<T>(ref T target, Stream stream)
+        {
+            using (var reader = new StreamReader(stream)) {
+                DeserializeInto<T>(ref target, reader);
+            }
+        }
+
+        /// <summary>
+        /// Deserializes the specified reader.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize</typeparam>
+        /// <param name="target">The target.</param>
+        /// <param name="reader">The reader.</param>
+        public void DeserializeInto<T>(ref T target, TextReader reader)
+        {
+            var jsonReader = new JsonReader(reader);
+            DeserializeInto<T>(ref target, jsonReader);
+        }
+
+        /// <summary>
+        /// Deserializes the specified reader.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize</typeparam>
+        /// <param name="target">The target.</param>
+        /// <param name="reader">The reader.</param>
+        public void DeserializeInto<T>(ref T target, JsonReader reader)
+        {
+            var context = new JsonDeserializationContext(this, reader);
+            DeserializeInplace<T>(ref target, context);
+        }
+
+        /// <summary>
+        /// Determines whether this instance can deserialize the specified type in-place.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>
-        /// 	<c>true</c> if this instance can deserialize the specfied type in-place; otherwise, <c>false</c>.
+        /// 	<c>true</c> if this instance can deserialize the specified type in-place; otherwise, <c>false</c>.
         /// </returns>
         public bool CanDeserializeInplace<T>() where T : class
         {

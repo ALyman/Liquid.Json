@@ -25,7 +25,7 @@ namespace Liquid.Json
         public IJsonTypeSerializer<T> CreateSerializer<T>(JsonSerializer serializer)
         {
             if (typeof(T).IsAssignableFrom(typeof(S))) {
-                return (IJsonTypeSerializer<T>) new Serializer(members);
+                return (IJsonTypeSerializer<T>)new Serializer(members);
             }
             return null;
         }
@@ -33,19 +33,19 @@ namespace Liquid.Json
         #endregion
 
         /// <summary>
-        /// The specified member is added to the list of members that will be serialzed/deserialzed.
+        /// The specified member is added to the list of members that will be serialized/deserialized.
         /// </summary>
         /// <typeparam name="R"></typeparam>
-        /// <param name="specifier">The member to be serialzed/deserialzed.</param>
+        /// <param name="specifier">The member to be serialized/deserialized.</param>
         /// <returns>The same instance of the factory.</returns>
         public JsonObjectSerializerFactory<S> WithMember<R>(Expression<Func<S, R>> specifier)
         {
+            if (specifier == null) throw new ArgumentNullException("specifier");
             var memberExpr = specifier.Body as MemberExpression;
             if (memberExpr == null)
-                throw new NotSupportedException();
-            if (memberExpr.Expression !=
-                specifier.Parameters[0])
-                throw new NotSupportedException();
+                throw new NotSupportedException("Can not serialize members that are not properties or fields");
+            if (memberExpr.Expression != specifier.Parameters[0])
+                throw new NotSupportedException("Can not serialize members that are not declared directly on the target object");
             members.Add(memberExpr.Member);
 
             return this;

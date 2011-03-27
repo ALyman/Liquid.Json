@@ -12,7 +12,7 @@ namespace Liquid.Json
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonDeserializationContext"/> class.
         /// </summary>
-        /// <param name="serailizer">The root serailizer.</param>
+        /// <param name="serailizer">The root serializer.</param>
         /// <param name="reader">The reader.</param>
         public JsonDeserializationContext(JsonSerializer serailizer, JsonReader reader)
         {
@@ -56,7 +56,7 @@ namespace Liquid.Json
         /// Deserializes the value in-place.
         /// </summary>
         /// <typeparam name="T">The type of the value to be deserialized in-place</typeparam>
-        /// <param name="value">The value to be deserailzed.</param>
+        /// <param name="value">The value to be deserialized.</param>
         public void DeserializeInplace<T>(ref T value)
         {
             serailizer.DeserializeInplace(ref value, this);
@@ -73,11 +73,11 @@ namespace Liquid.Json
         }
 
         /// <summary>
-        /// Determines whether this instance can deserialize the specfied type in-place.
+        /// Determines whether this instance can deserialize the specified type in-place.
         /// </summary>
         /// <typeparam name="T">The type of the value to be deserialized in-place</typeparam>
         /// <returns>
-        /// 	<c>true</c> if this instance can deserialize the specfied type in-place; otherwise, <c>false</c>.
+        /// 	<c>true</c> if this instance can deserialize the specified type in-place; otherwise, <c>false</c>.
         /// </returns>
         public bool CanDeserializeInplace<T>() where T : class
         {
@@ -88,7 +88,7 @@ namespace Liquid.Json
         /// Determines whether this instance can deserialize the specified type in-place.
         /// </summary>
         /// <returns>
-        /// 	<c>true</c> if this instance can deserialize the specfied type in-place; otherwise, <c>false</c>.
+        /// 	<c>true</c> if this instance can deserialize the specified type in-place; otherwise, <c>false</c>.
         /// </returns>
         public bool CanDeserializeInplace(Type type)
         {

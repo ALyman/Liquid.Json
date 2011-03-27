@@ -13,10 +13,9 @@ namespace Liquid.Json
         public static string ReadNextAs(this JsonReader reader, params JsonTokenType[] expectedTypes)
         {
             if (!reader.ReadNext())
-                throw new JsonDeserializationException();
-            if (Array.IndexOf(expectedTypes, reader.Token) ==
-                -1)
-                throw new JsonDeserializationException();
+                throw reader.UnexpectedTokenException(expectedTypes);
+            if (Array.IndexOf(expectedTypes, reader.Token) == -1)
+                throw reader.UnexpectedTokenException(expectedTypes);
             return reader.Text;
         }
 

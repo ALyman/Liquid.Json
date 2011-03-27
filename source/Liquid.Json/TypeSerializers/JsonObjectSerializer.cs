@@ -37,7 +37,7 @@ namespace Liquid.Json.TypeSerializers
         /// Deserializes the specified type.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns>The deserialzed value</returns>
+        /// <returns>The deserialized value</returns>
         public T Deserialize(JsonDeserializationContext context)
         {
             var @object = Activator.CreateInstance<T>();

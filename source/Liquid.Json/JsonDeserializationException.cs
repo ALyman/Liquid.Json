@@ -10,12 +10,7 @@ namespace Liquid.Json
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonDeserializationException"/> class.
         /// </summary>
-        public JsonDeserializationException() {}
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JsonDeserializationException"/> class.
-        /// </summary>
         /// <param name="message">The message.</param>
-        public JsonDeserializationException(string message) : base(message) {}
+        public JsonDeserializationException(string message) : base(message) { }
     }
 }

@@ -5,7 +5,7 @@ namespace Liquid.Json
     /// <summary>
     /// A JSON type serializer
     /// </summary>
-    /// <typeparam name="T">The type that can be serialized/deserialzed</typeparam>
+    /// <typeparam name="T">The type that can be serialized/deserialized</typeparam>
     public interface IJsonTypeSerializer<T>
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace Liquid.Json
     /// <summary>
     /// A JSON type serializer, capable of deserializing in-place.
     /// </summary>
-    /// <typeparam name="T">The type that can be serialized/deserialzed in-place</typeparam>
+    /// <typeparam name="T">The type that can be serialized/deserialized in-place</typeparam>
     public interface IJsonTypeInplaceSerializer<T>
         : IJsonTypeSerializer<T>
     {

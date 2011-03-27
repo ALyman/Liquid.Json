@@ -100,20 +100,6 @@ namespace Liquid.Json
         }
 
         /// <summary>
-        /// Reads the next token, and matches it to a set of expected token types.
-        /// </summary>
-        /// <param name="expectedTypes">The expected types.</param>
-        /// <returns>The text of the token</returns>
-        public string ReadNextAs(params JsonTokenType[] expectedTypes)
-        {
-            if (!ReadNext())
-                throw this.UnexpectedTokenException(expectedTypes);
-            if (Array.IndexOf(expectedTypes, Token) == -1)
-                throw this.UnexpectedTokenException(expectedTypes);
-            return Text;
-        }
-
-        /// <summary>
         /// Undoes the last read.
         /// </summary>
         public void UndoRead()
