@@ -35,7 +35,7 @@ namespace Liquid.Json.Tests.Serialization
         public void NullArray()
         {
             var serializer = new JsonSerializer();
-            string result = serializer.Serialize<int[]>(null);
+            string result = serializer.SerializeAs(typeof(int[]), null);
             Assert.AreEqual("null", result);
         }
     }

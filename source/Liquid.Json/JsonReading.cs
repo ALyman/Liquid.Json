@@ -21,10 +21,15 @@ namespace Liquid.Json
 
         public static Exception UnexpectedTokenException(this JsonReader reader, params JsonTokenType[] expectedTypes)
         {
+            throw reader.UnexpectedTokenException(null, expectedTypes);
+        }
+
+        public static Exception UnexpectedTokenException(this JsonReader reader, string expectedText, params JsonTokenType[] expectedTypes)
+        {
             if (reader.AtEndOfStream) {
                 return new JsonUnexpectedEndOfStreamException(expectedTypes);
             } else {
-                return new JsonUnexpectedTokenException(reader.Token, reader.Text, expectedTypes);
+                return new JsonUnexpectedTokenException(reader.Token, reader.Text, expectedTypes, expectedText);
             }
         }
     }

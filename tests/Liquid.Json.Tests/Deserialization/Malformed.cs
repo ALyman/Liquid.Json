@@ -151,5 +151,38 @@ namespace Liquid.Json.Tests.Deserialization
                 Assert.AreEqual("Unexpected end of file", ex.Message);
             }
         }
+
+        [TestMethod, TestCategory("Deserialization")]
+        public void ExpectedNewDate()
+        {
+            var serializer = new JsonSerializer();
+            try {
+                var result = serializer.Deserialize<ObjectWithDate_Class>("{A: 1}");
+            } catch (JsonUnexpectedTokenException ex) {
+                Assert.AreEqual("Unexpected token '1', expected: 'new'", ex.Message);
+            }
+        }
+
+        [TestMethod, TestCategory("Deserialization")]
+        public void UnexpectedDateTypeName()
+        {
+            var serializer = new JsonSerializer();
+            try {
+                var result = serializer.Deserialize<ObjectWithDate_Class>("{A: new BLAH(1970, 1, 2)}");
+            } catch (JsonUnexpectedTokenException ex) {
+                Assert.AreEqual("Unexpected token 'BLAH', expected: 'Date'", ex.Message);
+            }
+        }
+
+        [TestMethod, TestCategory("Deserialization")]
+        public void ExpectedDateAtEOF()
+        {
+            var serializer = new JsonSerializer();
+            try {
+                var result = serializer.Deserialize<ObjectWithDate_Class>("{A: ");
+            } catch (JsonUnexpectedEndOfStreamException ex) {
+                Assert.AreEqual("Unexpected end of file, expected: 'new'", ex.Message);
+            }
+        }
     }
 }

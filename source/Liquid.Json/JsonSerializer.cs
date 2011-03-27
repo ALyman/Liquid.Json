@@ -176,35 +176,30 @@ namespace Liquid.Json
         /// <param name="writer">The writer.</param>
         public void SerializeAs(Type type, object @object, TextWriter writer)
         {
-            MethodInfo m = SerializeMethod
-                .MakeGenericMethod(type);
-            // TODO: Remove the MethodInfo.Invoke
-            try {
-                // TODO: Replace this MethodInfo.Invoke with an expression tree
-                m.Invoke(this, new[] { @object, writer });
-#if DEBUG
-            } catch (TargetInvocationException ex) {
-                throw ex.InnerException;
-#endif
-            } finally { }
+            var thisParameter = Expression.Constant(this);
+            var objectParameter = Expression.Parameter(typeof(object), "@object");
+            var writerParameter = Expression.Parameter(typeof(TextWriter), "writer");
+
+            var invoke = Expression.Call(thisParameter, "Serialize", new Type[] { type },
+                Expression.Convert(objectParameter, type),
+                writerParameter);
+            var lambda = Expression.Lambda<Action<object, TextWriter>>(invoke, objectParameter, writerParameter);
+            var func = lambda.Compile();
+            func(@object, writer);
         }
 
         internal void SerializeAs(Type type, object @object, JsonSerializationContext context)
         {
-            MethodInfo m = SerializeContextMethod
-                .MakeGenericMethod(type);
-            ParameterExpression objectParam = Expression.Parameter(typeof(object), "object");
-            ParameterExpression contextParam = Expression.Parameter(typeof(JsonSerializationContext), "context");
-            Expression<SerializeDelegate> lambda = Expression.Lambda<SerializeDelegate>(
-                Expression.Call(
-                    Expression.Constant(this),
-                    m,
-                    Expression.Convert(objectParam, type),
-                    contextParam
-                    ),
-                objectParam, contextParam
-                );
-            lambda.Compile()(@object, context);
+            var thisParameter = Expression.Constant(this);
+            var objectParameter = Expression.Parameter(typeof(object), "@object");
+            var writerParameter = Expression.Parameter(typeof(JsonSerializationContext), "context");
+
+            var invoke = Expression.Call(thisParameter, "Serialize", new Type[] { type },
+                Expression.Convert(objectParameter, type),
+                writerParameter);
+            var lambda = Expression.Lambda<Action<object, JsonSerializationContext>>(invoke, objectParameter, writerParameter);
+            var func = lambda.Compile();
+            func(@object, context);
         }
 
         /// <summary>
@@ -283,15 +278,16 @@ namespace Liquid.Json
 
         internal object DeserializeAs(Type type, JsonDeserializationContext context)
         {
-            MethodInfo m = DeserializeContextMethod.MakeGenericMethod(type);
-            try {
-                // TODO: Replace this MethodInfo.Invoke with an expression tree
-                return m.Invoke(this, new[] { context });
-#if DEBUG
-            } catch (TargetInvocationException ex) {
-                throw ex.InnerException;
-#endif
-            } finally { }
+            var thisParameter = Expression.Constant(this);
+            var contextParameter = Expression.Parameter(typeof(JsonDeserializationContext), "context");
+
+            Expression invoke = Expression.Call(thisParameter, "Deserialize", new[] { type }, contextParameter);
+            if (type.IsValueType) {
+                invoke = Expression.Convert(invoke, typeof(object));
+            }
+            var lambda = Expression.Lambda<Func<JsonDeserializationContext, object>>(invoke, contextParameter);
+            var func = lambda.Compile();
+            return func(context);
         }
 
         /// <summary>
@@ -369,6 +365,7 @@ namespace Liquid.Json
         #region Nested type: SerializeDelegate
 
         private delegate void SerializeDelegate(object @object, JsonSerializationContext context);
+        private delegate void DeserializeInplaceDelegate(ref object @object, JsonDeserializationContext context);
 
         #endregion
 
@@ -386,17 +383,16 @@ namespace Liquid.Json
             if (value == null)
                 throw new ArgumentNullException("@object");
 
-            var m = DeserializeInplaceContextMethod.MakeGenericMethod(type);
-            try {
-                // TODO: Replace this MethodInfo.Invoke with an expression tree
-                var args = new[] { value, context };
-                m.Invoke(this, args);
-                value = args[0];
-#if DEBUG
-            } catch (TargetInvocationException ex) {
-                throw ex.InnerException;
-#endif
-            } finally { }
+            var thisParameter = Expression.Constant(this);
+            var targetParameter = Expression.Parameter(typeof(object).MakeByRefType(), "target");
+            var contextParameter = Expression.Parameter(typeof(JsonDeserializationContext), "context");
+
+            var method = DeserializeInplaceContextMethod.MakeGenericMethod(type);
+
+            Expression invoke = Expression.Call(thisParameter, method, Expression.Convert(targetParameter, type), contextParameter);
+            var lambda = Expression.Lambda<DeserializeInplaceDelegate>(invoke, targetParameter, contextParameter);
+            var func = lambda.Compile();
+            func(ref value, context);
         }
     }
 }

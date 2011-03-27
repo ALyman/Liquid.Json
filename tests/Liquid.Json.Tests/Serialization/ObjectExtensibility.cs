@@ -60,41 +60,11 @@ namespace Liquid.Json.Tests.Serialization
         public class Y : X
         {
 
-            public int A
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public int A { get; set; }
 
-            public int B
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public int B { get; set; }
 
-            public int C
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
+            public int C { get; set; }
         }
 
         #endregion

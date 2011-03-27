@@ -59,6 +59,14 @@ namespace Liquid.Json
                 case '\0':
                     readEOF = true;
                     return false;
+                case '(':
+                    Read();
+                    Token = JsonTokenType.ConstructorStart;
+                    return true;
+                case ')':
+                    Read();
+                    Token = JsonTokenType.ConstructorEnd;
+                    return true;
                 case '{':
                     Read();
                     Token = JsonTokenType.ObjectStart;

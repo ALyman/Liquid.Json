@@ -82,6 +82,11 @@ namespace Liquid.Json.Tests
         public int? A = null;
     }
 
+    internal class ObjectWithDate_Class
+    {
+        public DateTime A;
+    }
+
     internal class ObjectWithNullReadOnlyChild_Class
     {
         public readonly ObjectWithFields_Class A = null;

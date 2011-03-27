@@ -66,12 +66,17 @@ namespace Liquid.Json
         /// ':'
         /// </summary>
         Colon,
+        ConstructorStart,
+        ConstructorEnd,
     }
 
     internal static class JsonTokenTypes
     {
-        public static string ToErrorString(this IEnumerable<JsonTokenType> types)
+        public static string ToErrorString(this IEnumerable<JsonTokenType> types, string expectedText = null)
         {
+            if (expectedText != null)
+                return string.Format(", expected: '{0}'", expectedText);
+
             if (types.Contains(JsonTokenType.Any))
                 return string.Empty;
 

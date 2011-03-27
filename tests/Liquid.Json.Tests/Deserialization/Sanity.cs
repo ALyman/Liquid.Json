@@ -24,5 +24,19 @@ namespace Liquid.Json.Tests.Deserialization
                 Assert.AreEqual("@object", ex.ParamName);
             }
         }
+
+        [TestMethod, TestCategory("Deserialization")]
+        public void DeserializeInplaceT()
+        {
+            var serializer = new JsonSerializer();
+            var reader = new JsonReader(new StringReader("{A: [1,2]}"));
+            var context = new JsonDeserializationContext(serializer, reader);
+            ObjectWithArrays_Class c = new ObjectWithArrays_Class();
+            Assert.IsTrue(context.CanDeserializeInplace<ObjectWithArrays_Class>());
+            context.DeserializeInplace(ref c);
+            Assert.AreEqual(2, c.A.Length);
+            Assert.AreEqual(1, c.A[0]);
+            Assert.AreEqual(2, c.A[1]);
+        }
     }
 }

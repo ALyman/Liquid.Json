@@ -51,9 +51,6 @@ namespace Liquid.Json
                     case '\t':
                         result.Append("\\t");
                         break;
-                    // TODO: Implement unicode characters in Json.EscapeString(string)
-                    //case 'u':
-                    //case 'U': throw new NotImplementedException();
                     default:
                         if (ch > 255) {
                             result.AppendFormat("\\u{0:x4}", (short)ch);
