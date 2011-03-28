@@ -58,6 +58,7 @@
     <Compile Include="Deserialization\Other.cs" />
     <Compile Include="Deserialization\Reals.cs" />
     <Compile Include="Deserialization\Sanity.cs" />
+    <Compile Include="Deserialization\Streams.cs" />
     <Compile Include="MemberUtilsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reader\LookAhead.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Serialization\Objects.cs" />
     <Compile Include="Serialization\Other.cs" />
     <Compile Include="Serialization\Reals.cs" />
+    <Compile Include="Serialization\Streams.cs" />
     <Compile Include="Serialization\Strings.cs" />
     <Compile Include="TestClasses.cs" />
     <Compile Include="TypeSerializerFactory\Factory.cs" />

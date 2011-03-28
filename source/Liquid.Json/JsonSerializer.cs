@@ -102,9 +102,9 @@ namespace Liquid.Json
         /// <param name="stream">The stream.</param>
         public void Serialize<T>(T @object, Stream stream)
         {
-            using (var writer = new StreamWriter(stream)) {
-                Serialize(@object, writer);
-            }
+            var writer = new StreamWriter(stream);
+            Serialize(@object, writer);
+            writer.Flush();
         }
 
         /// <summary>
@@ -163,9 +163,9 @@ namespace Liquid.Json
         /// <param name="stream">The stream.</param>
         public void SerializeAs(Type type, object @object, Stream stream)
         {
-            using (var writer = new StreamWriter(stream)) {
-                SerializeAs(type, @object, writer);
-            }
+            var writer = new StreamWriter(stream);
+            SerializeAs(type, @object, writer);
+            writer.Flush();
         }
 
         /// <summary>
